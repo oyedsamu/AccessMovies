@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "519914940750",
+    "firebase_url": "https://access-movies.firebaseio.com",
+    "project_id": "access-movies",
+    "storage_bucket": "access-movies.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519914940750:android:4d4c7a4154be02c7b0561f",
+        "android_client_info": {
+          "package_name": "com.decadevs.accessmovies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519914940750-cqbsi3usg2n9t73ah0m2kee3l7nrtnah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeyESRQZrTBVmF9r5JB-m79_XlkQ7Kjt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519914940750-cqbsi3usg2n9t73ah0m2kee3l7nrtnah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
