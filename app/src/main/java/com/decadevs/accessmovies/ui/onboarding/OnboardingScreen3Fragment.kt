@@ -21,4 +21,9 @@ class OnboardingScreen3Fragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
+    }
 }
