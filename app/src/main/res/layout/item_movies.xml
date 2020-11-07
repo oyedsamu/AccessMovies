@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/item_movie_image"
+        android:layout_width="110dp"
+        android:layout_height="150dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/item_movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/item_movie_image"
+        app:layout_constraintTop_toTopOf="@+id/item_movie_image"
+        tools:text="Avengers" />
+
+    <TextView
+        android:id="@+id/item_movie_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="30dp"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/item_movie_image"
+        app:layout_constraintTop_toBottomOf="@+id/item_movie_title"
+        tools:text="Views: 100" />
+
+    <TextView
+        android:id="@+id/item_movie_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:layout_marginTop="8dp"
+        android:paddingEnd="16dp"
+        android:layout_marginStart="30dp"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/item_movie_image"
+        app:layout_constraintTop_toBottomOf="@+id/item_movie_genre"
+        tools:text="Release Date: 16 Feb 2018" />
+
+    <TextView
+        android:id="@+id/item_price_ticket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:layout_marginTop="8dp"
+        android:paddingEnd="16dp"
+        android:layout_marginStart="30dp"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/item_movie_image"
+        app:layout_constraintTop_toBottomOf="@+id/item_movie_rating"
+        tools:text="Ticket price" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
