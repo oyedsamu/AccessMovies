@@ -2,4 +2,6 @@
     <string name="app_name">Access Movies</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="opps_result_could_not_be_loaded_str">load_state_message</string>
+    <string name="retry_str">retry_str</string>
 </resources>
