@@ -11,9 +11,9 @@
     <!-- PROJECT COLORS -->
     <color name="orange">#E79035</color>
     <color name="pink">#CC5068</color>
+    <color name="blue">#091C4C</color>
 
     <!-- ONBOARDING -->
     <color name="onboarding2_yellow">#B49A3F</color>
     <color name="transparent">#00000000</color>
-    <color name="onboarding3_blue">#050B1B</color>
 </resources>
