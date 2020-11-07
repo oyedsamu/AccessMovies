@@ -25,8 +25,8 @@ class LoginFragment : Fragment() {
     lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
@@ -38,42 +38,51 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         /** HIDE KEYBOARD */
-        view.setOnClickListener{
+        view.setOnClickListener {
             it.hideKeyboard()
         }
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        binding.loginLoginBtn.setOnClickListener{
+        binding.logInLogInBtn.setOnClickListener {
             val validator = Validator()
-            val email = binding.loginEmailEt.text.toString()
-            val password = binding.loginPasswordEt.text.toString()
-            val validateEmail = validator.validateEmail(email)
-            val validatePassword = validator.validatePassword(password)
+            binding.logInLogInBtn.setOnClickListener {
+                val email = binding.loginEmailEt.text.toString()
+                val password = binding.loginPasswordEt.text.toString()
+                val validateEmail = validator.validateEmail(email)
+                val validatePassword = validator.validatePassword(password)
 
-            /** LOGIN USER */
-            if(validateEmail && validatePassword) {
-                view.hideKeyboard()
-                binding.loginEmailEt.text.clear()
-                binding.loginPasswordEt.text.clear()
-                binding.loginProgressBarPb.visibility = View.VISIBLE
-                /** MAKE NETWORK CALL TO LOGIN USER */
-                signin(email, password)
+                /** LOGIN USER */
+                if (validateEmail && validatePassword) {
+                    view.hideKeyboard()
+                    binding.loginEmailEt.text.clear()
+                    binding.loginPasswordEt.text.clear()
+                    binding.logInProgressBarPb.visibility = View.VISIBLE
+                    /** MAKE NETWORK CALL TO LOGIN USER */
+                    signin(email, password)
+                }
+
+                /** INVALID EMAIL OR PASSWORD FORMAT */
+                if (!validateEmail || !validatePassword) {
+                    view.hideKeyboard()
+                    Snackbar.make(
+                        requireView(),
+                        "Please Enter A Valid Email And Password To Continue",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             }
 
-            /** INVALID EMAIL OR PASSWORD FORMAT */
-            if(!validateEmail || !validatePassword) {
-                view.hideKeyboard()
-                Snackbar.make(requireView(), "Please Enter A Valid Email And Password To Continue", Snackbar.LENGTH_LONG).show()
+            binding.loginSignUpTv.setOnClickListener {
+                /** MOVE TO REGISTER SCREEN */
+                Toast.makeText(
+                    this.context,
+                    "Implement Code To Move To Register Fragment",
+                    Toast.LENGTH_LONG
+                ).show()
             }
-        }
-
-        binding.loginRegisterTv.setOnClickListener {
-            /** MOVE TO REGISTER SCREEN */
-            Toast.makeText(this.context, "Implement Code To Move To Register Fragment", Toast.LENGTH_LONG).show()
 
         }
-
     }
 
     override fun onDestroy() {
@@ -81,7 +90,7 @@ class LoginFragment : Fragment() {
         super.onDestroy()
     }
 
-    private fun signin(email: String, password: String){
+    fun signin(email: String, password: String) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
@@ -94,7 +103,11 @@ class LoginFragment : Fragment() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    Snackbar.make(requireView(), "Email or Password Incorrect", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        requireView(),
+                        "Email or Password Incorrect",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
 
                 // ...
