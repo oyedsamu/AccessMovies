@@ -3,6 +3,7 @@ package com.decadevs.accessmovies
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentLandingPageBinding
@@ -32,10 +33,13 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-
-
-
+        /** GO TO ADD NEW MOVIE SCREEN */
+        binding.landingAddMovieImgBtn.setOnClickListener {
+//            findNavController().navigate(R.id.newMovie)
+        }
     }
+
+
 
     override fun onItemClick(movie: Movie) {
 
