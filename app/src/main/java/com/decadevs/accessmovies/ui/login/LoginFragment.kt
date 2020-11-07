@@ -36,7 +36,7 @@ class LoginFragment : Fragment() {
             it.hideKeyboard()
         }
 
-        binding.loginLoginBtn.setOnClickListener{
+        binding.logInLogInBtn.setOnClickListener{
             val email = binding.loginEmailEt.text.toString()
             val password = binding.loginPasswordEt.text.toString()
             val validateEmail = Validator().validateEmail(email)
@@ -47,7 +47,7 @@ class LoginFragment : Fragment() {
                 view?.hideKeyboard()
                 binding.loginEmailEt.text.clear()
                 binding.loginPasswordEt.text.clear()
-                binding.loginProgressBarPb.visibility = View.VISIBLE
+                binding.logInProgressBarPb.visibility = View.VISIBLE
                 /** MAKE NETWORK CALL TO LOGIN USER */
             }
 
@@ -58,9 +58,9 @@ class LoginFragment : Fragment() {
             }
         }
 
-        binding.loginRegisterTv.setOnClickListener {
+        binding.loginSignUpTv.setOnClickListener {
             /** MOVE TO REGISTER SCREEN */
-            Toast.makeText(this.context, "Implement Code To Move To Register Fragment", Toast.LENGTH_LONG).show()
+            Toast.makeText(this.context, "Implement Code To Move To Register Fragment", Toast.LENGTH_LONG)
         }
 
     }
