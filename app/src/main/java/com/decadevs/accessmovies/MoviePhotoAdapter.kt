@@ -16,6 +16,20 @@ class MoviePhotoAdapter (private val listener : OnItemClickListener) : PagingDat
 
     inner class MovieViewHolder (private val binding: ItemMoviesBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        init {
+            binding.root.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val item = getItem(position)
+
+                    if (item != null) {
+                        listener.onItemClick(item)
+                    }
+
+                }
+            }
+        }
+
         fun bind (movie : MoviePhoto) {
             binding.apply {
                 Glide.with(itemView)
