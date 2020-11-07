@@ -8,5 +8,4 @@ class LandingPageViewModel(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
 
-
 }

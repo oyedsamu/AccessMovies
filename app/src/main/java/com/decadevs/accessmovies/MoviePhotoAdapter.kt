@@ -2,6 +2,7 @@ package com.decadevs.accessmovies
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,23 +11,22 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.ItemMoviesBinding
 
-class MoviePhotoAdapter (private val listener : OnItemClickListener) : PagingDataAdapter<Movie, MoviePhotoAdapter.MovieViewHolder>(
-    MOVIE_COMPARATOR
-) {
+class MoviePhotoAdapter ( val movies: MutableList<Movie>) : RecyclerView.Adapter<MoviePhotoAdapter.MovieViewHolder>(){
+
 
     inner class MovieViewHolder (private val binding: ItemMoviesBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.root.setOnClickListener {
                 val position = bindingAdapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val item = getItem(position)
-
-                    if (item != null) {
-                        listener.onItemClick(item)
-                    }
-
-                }
+//                if (position != RecyclerView.NO_POSITION) {
+//                    val item = getItem(position)
+//
+//                    if (item != null) {
+//                        listener.onItemClick(item)
+//                    }
+//
+//                }
             }
         }
 
@@ -63,7 +63,7 @@ class MoviePhotoAdapter (private val listener : OnItemClickListener) : PagingDat
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val currentItem = getItem(position)
+        val currentItem = movies[position]
 
         if (currentItem != null ) {
             holder.bind(currentItem)
@@ -77,5 +77,13 @@ class MoviePhotoAdapter (private val listener : OnItemClickListener) : PagingDat
         return MovieViewHolder(binding)
     }
 
+    override fun getItemCount() = movies.size
+
+
+    fun update(list: List<Movie>){
+        this.movies.clear()
+        this.movies.addAll(list)
+        notifyDataSetChanged()
+    }
 
 }
