@@ -1,4 +1,4 @@
-package com.decadevs.accessmovies
+package com.decadevs.accessmovies.ui.onboarding
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

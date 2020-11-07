@@ -20,16 +20,24 @@
         android:id="@+id/onBoarding_indicator_tl"
         android:layout_width="50dp"
         android:layout_height="30dp"
+        android:elevation="0dp"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="center"
+        app:tabIndicatorGravity="center"
+        app:tabIndicatorHeight="0dp"
+        android:backgroundTint="@color/transparent"
         android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toTopOf="@+id/onBoarding_next_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/onBoarding_next_btn"
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:text="Next"
+        android:textSize="30sp"
+        app:backgroundTint="@color/transparent"
         android:background="@drawable/button_background"
         android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
