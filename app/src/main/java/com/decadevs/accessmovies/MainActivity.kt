@@ -2,8 +2,7 @@ package com.decadevs.accessmovies
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.decadevs.accessmovies.ui.login.LoginFragment
-import com.decadevs.accessmovies.ui.onboarding.OnboardingFragment
+import com.decadevs.accessmovies.ui.signup.SignUpFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,7 +10,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.mainActivity_fragment_fl, LoginFragment())
+            replace(R.id.mainActivity_fragment_fl, SignUpFragment())
                 .addToBackStack(null)
                 .commit()
         }
