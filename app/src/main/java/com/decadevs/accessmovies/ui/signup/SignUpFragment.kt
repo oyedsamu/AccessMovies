@@ -34,26 +34,29 @@ class SignUpFragment : Fragment() {
         }
 
         binding.signUpSignUpBtn.setOnClickListener {
+            val validator = Validator()
             val username = binding.signUpUsernameEt.text.toString()
             val email = binding.signUpEmailEt.text.toString()
             val password = binding.signUpPasswordEt.text.toString()
 
-            val validateUsernmae = Validator().checkIfEmpty(username)
-            val validateEmail = Validator().validateEmail(email)
-            val validatePassword = Validator().validatePassword(password)
+            val validateUsername = validator.checkIfEmpty(username)
+            val validateEmail = validator.validateEmail(email)
+            val validatePassword = validator.validatePassword(password)
 
-            if(!validateUsernmae && validateEmail && validatePassword) {
-                view?.hideKeyboard()
+            if(!validateUsername && validateEmail && validatePassword) {
+                view.hideKeyboard()
                 binding.signUpUsernameEt.text.clear()
                 binding.signUpEmailEt.text.clear()
                 binding.signUpPasswordEt.text.clear()
                 binding.signUpProgressBarPb.visibility = View.VISIBLE
 
                 /** MAKE NETWORK CALL TO REGISTER NEW USER */
+
+                registerNewUser(email, password)
             }
 
-            if(validateUsernmae || !validateEmail || !validatePassword) {
-                view?.hideKeyboard()
+            if(validateUsername || !validateEmail || !validatePassword) {
+                view.hideKeyboard()
                 Snackbar.make(requireView(), "Please Input Valid Data To Continue", Snackbar.LENGTH_LONG).show()
             }
         }
@@ -67,5 +70,9 @@ class SignUpFragment : Fragment() {
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
+    }
+
+    fun registerNewUser(email: String, password: String){
+
     }
 }
