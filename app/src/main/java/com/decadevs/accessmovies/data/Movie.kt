@@ -1,6 +1,6 @@
 package com.decadevs.accessmovies.data
 
-data class MoviePhoto (
+data class Movie (
 
     val id : String,
     val name : String,

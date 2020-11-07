@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/landingPage"
-        android:name="com.decadevs.accessmovies.LandingPage"
+        android:name="com.decadevs.accessmovies.LandingPageFragment"
         android:label="fragment_landing_page"
         tools:layout="@layout/fragment_landing_page" />
 </navigation>

@@ -1,6 +1,8 @@
 package com.decadevs.accessmovies.data
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +19,14 @@ class MoviePhotoLoadStateAdapter (private val retry : () -> Unit) : LoadStateAda
             }
         }
 
+        fun bind ( loadState: LoadState) {
+
+            binding.apply {
+                progressBar.isVisible = loadState is LoadState.Loading
+                buttonRetry.isVisible = loadState !is LoadState.Loading
+            }
+        }
+
     }
 
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
@@ -24,6 +34,12 @@ class MoviePhotoLoadStateAdapter (private val retry : () -> Unit) : LoadStateAda
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
-        TODO("Not yet implemented")
+        val binding = MoviePhotoLoadStateFooterBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+
+        return LoadStateViewHolder(binding)
     }
 }

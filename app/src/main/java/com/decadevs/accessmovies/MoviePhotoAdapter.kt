@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.decadevs.accessmovies.data.MoviePhoto
+import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.ItemMoviesBinding
 
-class MoviePhotoAdapter (private val listener : OnItemClickListener) : PagingDataAdapter<MoviePhoto, MoviePhotoAdapter.MovieViewHolder>(
+class MoviePhotoAdapter (private val listener : OnItemClickListener) : PagingDataAdapter<Movie, MoviePhotoAdapter.MovieViewHolder>(
     MOVIE_COMPARATOR
 ) {
 
@@ -30,7 +30,7 @@ class MoviePhotoAdapter (private val listener : OnItemClickListener) : PagingDat
             }
         }
 
-        fun bind (movie : MoviePhoto) {
+        fun bind (movie : Movie) {
             binding.apply {
                 Glide.with(itemView)
                     .load(movie.photo)
@@ -49,15 +49,15 @@ class MoviePhotoAdapter (private val listener : OnItemClickListener) : PagingDat
     }
 
     interface OnItemClickListener {
-        fun onItemClick(movie: MoviePhoto)
+        fun onItemClick(movie: Movie)
     }
 
     companion object {
-        private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<MoviePhoto>() {
-            override fun areItemsTheSame(oldItem: MoviePhoto, newItem: MoviePhoto): Boolean =
+        private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: MoviePhoto, newItem: MoviePhoto): Boolean =
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
                 oldItem.id == newItem.id
         }
     }
