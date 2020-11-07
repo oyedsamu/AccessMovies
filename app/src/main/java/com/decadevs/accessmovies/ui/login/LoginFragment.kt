@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.databinding.FragmentLoginBinding
 import com.decadevs.accessmovies.databinding.FragmentOnboardingBinding
@@ -59,8 +60,13 @@ class LoginFragment : Fragment() {
 
         binding.loginRegisterTv.setOnClickListener {
             /** MOVE TO REGISTER SCREEN */
+            Toast.makeText(this.context, "Implement Code To Move To Register Fragment", Toast.LENGTH_LONG).show()
         }
 
     }
 
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
+    }
 }
