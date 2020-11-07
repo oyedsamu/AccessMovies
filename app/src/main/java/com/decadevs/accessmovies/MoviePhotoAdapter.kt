@@ -1,5 +1,6 @@
 package com.decadevs.accessmovies
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -9,7 +10,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.decadevs.accessmovies.data.MoviePhoto
 import com.decadevs.accessmovies.databinding.ItemMoviesBinding
 
-class MoviePhotoAdapter : PagingDataAdapter<MoviePhoto, MoviePhotoAdapter.MovieViewHolder>(
+class MoviePhotoAdapter (private val listener : OnItemClickListener) : PagingDataAdapter<MoviePhoto, MoviePhotoAdapter.MovieViewHolder>(
     MOVIE_COMPARATOR
 ) {
 
@@ -21,10 +22,20 @@ class MoviePhotoAdapter : PagingDataAdapter<MoviePhoto, MoviePhotoAdapter.MovieV
                     .load(movie.photo)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .error()
+                    .error(R.drawable.ic_error)
+                    .into(itemMovieImage)
+
+                itemMovieTitle.text = movie.name
+                itemMovieGenre.text = movie.genre
+                itemMovieRating.text = movie.rating
+                itemPriceTicket.text = movie.rating
             }
         }
 
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(movie: MoviePhoto)
     }
 
     companion object {
@@ -46,7 +57,10 @@ class MoviePhotoAdapter : PagingDataAdapter<MoviePhoto, MoviePhotoAdapter.MovieV
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        TODO("Not yet implemented")
+
+        val binding = ItemMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false )
+
+        return MovieViewHolder(binding)
     }
 
 
