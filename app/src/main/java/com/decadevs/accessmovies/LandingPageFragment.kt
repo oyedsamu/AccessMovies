@@ -36,6 +36,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
 
 
 
+
     }
 
     override fun onItemClick(movie: Movie) {
