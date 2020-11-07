@@ -11,7 +11,8 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.mainActivity_fragment_fl, OnboardingFragment())
-                    .commit()
+                .addToBackStack(null)
+                .commit()
         }
     }
 }

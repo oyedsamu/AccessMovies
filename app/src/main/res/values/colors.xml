@@ -16,4 +16,7 @@
     <!-- ONBOARDING -->
     <color name="onboarding2_yellow">#B49A3F</color>
     <color name="transparent">#00000000</color>
+
+    <!-- LOGIN SCREEN -->
+    <color name="grey">#172C61</color>
 </resources>
