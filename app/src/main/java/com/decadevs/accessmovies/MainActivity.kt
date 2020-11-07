@@ -10,10 +10,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.mainActivity_fragment_fl, OnboardingFragment())
-                .addToBackStack(null)
-                .commit()
-        }
     }
 }

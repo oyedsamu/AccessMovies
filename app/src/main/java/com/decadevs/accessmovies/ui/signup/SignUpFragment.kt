@@ -1,11 +1,12 @@
 package com.decadevs.accessmovies.ui.signup
 
+import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.ColorInt
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.databinding.FragmentOnboardingScreen1Binding
 import com.decadevs.accessmovies.databinding.FragmentSignUpBinding
@@ -23,6 +24,8 @@ class SignUpFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
+
+
         return binding.root
     }
 
@@ -63,6 +66,13 @@ class SignUpFragment : Fragment() {
             Toast.makeText(this.context, "Implement Go To Sign In Screen", Toast.LENGTH_SHORT).show()
         }
     }
+
+//    private fun updateStatusBarColor(@ColorInt color: Int) {
+//        if (SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+//            window.statusBarColor = color
+//        }
+//    }
 
     override fun onDestroy() {
         _binding = null

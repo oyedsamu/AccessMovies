@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/landingPage">
+    app:startDestination="@id/onboardingFragment">
 
 
     <fragment
@@ -11,4 +11,24 @@
         android:name="com.decadevs.accessmovies.LandingPageFragment"
         android:label="fragment_landing_page"
         tools:layout="@layout/fragment_landing_page" />
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.decadevs.accessmovies.ui.onboarding.OnboardingFragment"
+        android:label="fragment_onboarding"
+        tools:layout="@layout/fragment_onboarding" />
+    <fragment
+        android:id="@+id/movieDetails"
+        android:name="com.decadevs.accessmovies.ui.MovieDetails"
+        android:label="fragment_moviedetails"
+        tools:layout="@layout/fragment_moviedetails" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.decadevs.accessmovies.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.decadevs.accessmovies.ui.signup.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
 </navigation>
