@@ -14,6 +14,6 @@ data class Movie (
     val ticketPrice : String,
     val country : String,
     val genre : String,
-    val photo : Int
+    val photo : Int,
 
 )
