@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.databinding.FragmentLoginBinding
 import com.decadevs.accessmovies.databinding.FragmentOnboardingBinding
+import com.decadevs.accessmovies.utils.Constants
 import com.decadevs.accessmovies.utils.Validator
 import com.decadevs.accessmovies.utils.hideKeyboard
 import com.decadevs.accessmovies.utils.hideStatusBar
@@ -80,8 +82,8 @@ class LoginFragment : Fragment() {
                     "Implement Code To Move To Register Fragment",
                     Toast.LENGTH_LONG
                 ).show()
+                findNavController().navigate(R.id.landingPage)
             }
-
         }
     }
 
@@ -98,8 +100,13 @@ class LoginFragment : Fragment() {
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = firebaseAuth.currentUser
                     val name = user?.displayName
-                    // Go to List and change Login button to Logout.
+
+                    Constants.name = name
+
+
+                    // Go back to last screen and change Login button to Logout.
                     // Set name as name while launching the Fragment.
+                    //
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)

@@ -65,9 +65,7 @@ class MoviePhotoAdapter ( val movies: MutableList<Movie>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = movies[position]
 
-        if (currentItem != null ) {
-            holder.bind(currentItem)
-        }
+        holder.bind(currentItem)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {

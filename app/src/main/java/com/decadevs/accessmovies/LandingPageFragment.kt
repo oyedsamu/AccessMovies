@@ -1,26 +1,24 @@
 package com.decadevs.accessmovies
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentLandingPageBinding
+import com.decadevs.accessmovies.utils.Constants
+import com.google.firebase.auth.FirebaseAuth
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LandingPageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhotoAdapter.OnItemClickListener {
 
 //    private val viewModel by viewModels<LandingPageViewModel> ()
 
+    private lateinit var mAuth: FirebaseAuth
     val adapter = MoviePhotoAdapter(mutableListOf())
-
     private var _binding : FragmentLandingPageBinding? = null
-
     private val binding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,12 +29,26 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        mAuth = FirebaseAuth.getInstance()
 
-
-
-
+//        binding.landingSignInTv.setOnClickListener {
+//            Constants.fragment = R.id.landingPage
+//            findNavController().navigate(R.id.loginFragment)
+//        }
     }
 
+    override fun onStart() {
+        super.onStart()
+        val name: String
+        val currentUser = mAuth.currentUser
+        if (currentUser != null){
+            name = currentUser.displayName.toString()
+            Constants.name = name
+//            binding.landingSignInTv.visibility = View.INVISIBLE
+//            binding.landingSignOutTv.visibility = View.VISIBLE
+//            binding.landingAddMovieImgBtn.visibility = View.VISIBLE
+        }
+    }
     override fun onItemClick(movie: Movie) {
 
     }
@@ -56,14 +68,21 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
 
 
     fun getMovies(num: Int): MutableList<Movie> {
-
-        var lists = mutableListOf<Movie>()
+        val lists = mutableListOf<Movie>()
         for (i in 0..num){
-            val movie = Movie(id= "aa", name= "seen", description = "gthe", releaseDate = "asas", rating = "gge", ticketPrice = "gg", country = "thaa", genre = "asas", photo = R.drawable.ic_baseline_add_business)
+            val movie = Movie(
+                id = "aa",
+                name = "seen",
+                description = "gthe",
+                releaseDate = "asas",
+                rating = "gge",
+                ticketPrice = "gg",
+                country = "thaa",
+                genre = "asas",
+                photo = R.drawable.ic_baseline_add_business
+            )
           lists.add(movie)
         }
-
-
         return lists
     }
 

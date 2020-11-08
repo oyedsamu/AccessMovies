@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.databinding.FragmentOnboardingBinding
@@ -60,7 +61,7 @@ class OnboardingFragment : Fragment() {
             when(viewPager?.currentItem) {
                 0 -> viewPager.currentItem = 1
                 1 -> viewPager.currentItem = 2
-                2 -> Toast.makeText(this.context, "end of pages", Toast.LENGTH_SHORT).show()
+                2 -> findNavController().navigate(R.id.landingPage)
             }
         }
     }
