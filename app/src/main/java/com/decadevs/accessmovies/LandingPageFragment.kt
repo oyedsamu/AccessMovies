@@ -3,7 +3,9 @@ package com.decadevs.accessmovies
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.decadevs.accessmovies.adapters.MoviePhotoAdapter
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentLandingPageBinding
 
@@ -35,6 +37,11 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
 
 
 
+        binding.testing.setOnClickListener {
+            findNavController().navigate(R.id.addMovieFragment)
+        }
+
+
     }
 
     override fun onItemClick(movie: Movie) {
@@ -59,7 +66,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
 
         var lists = mutableListOf<Movie>()
         for (i in 0..num){
-            val movie = Movie(id= "aa", name= "seen", description = "gthe", releaseDate = "asas", rating = "gge", ticketPrice = "gg", country = "thaa", genre = "asas", photo = R.drawable.ic_baseline_add_business)
+            val movie = Movie(id= "aa", name= "From Russia With Love", description = "What love does", releaseDate = "2020", rating = "4", ticketPrice = "$88", country = "California", genre = "Action", photo = R.drawable.sixunderground)
           lists.add(movie)
         }
 
