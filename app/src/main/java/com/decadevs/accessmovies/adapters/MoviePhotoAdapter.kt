@@ -41,7 +41,7 @@ class MoviePhotoAdapter ( val movies: MutableList<Movie>) : RecyclerView.Adapter
                 itemMovieTitle.text = movie.name
                 itemMovieGenre.text = movie.genre
                 itemMovieRating.text = movie.rating
-                itemPriceTicket.text = movie.rating
+                itemPriceTicket.text = movie.ticketPrice
             }
         }
 

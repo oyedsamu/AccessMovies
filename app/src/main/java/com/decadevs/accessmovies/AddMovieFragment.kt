@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.decadevs.accessmovies.databinding.FragmentAddMovieBinding
+import com.decadevs.accessmovies.validation.Validation
 
 
 class AddMovieFragment : Fragment() {
@@ -29,6 +31,38 @@ class AddMovieFragment : Fragment() {
 
 
         return binding.root
+
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        // Fields required to fill
+        val editTextTitle = binding.fragmentAddMovieTitleEt
+        val editTextGenre = binding.fragmentAddMovieGenreEt
+        val editTextRating = binding.fragmentAddMovieRatingsEt
+        val editTextCountry = binding.fragmentAddMovieCountryEt
+        val editTextReleaseDate = binding.fragmentAddMovieReleaseDateEt
+        val editTextTicket = binding.fragmentAddMovieTicketPriceEt
+        val editTextDescription = binding.fragmentAddMovieDescription
+
+
+
+
+        // Validate user input
+        binding.fragmentAddMovieAddImageBtn.setOnClickListener {
+
+           val checkUserInput = Validation(editTextTitle, editTextGenre, editTextRating, editTextCountry,
+                   editTextReleaseDate, editTextTicket, editTextDescription )
+
+            if (checkUserInput != null)  {
+                checkUserInput.error = "Field required"
+            } else {
+                findNavController().navigate(R.id.landingPage)
+            }
+
+        }
+
 
     }
 
