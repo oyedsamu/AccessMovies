@@ -1,19 +1,16 @@
 package com.decadevs.accessmovies.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.decadevs.accessmovies.LandingPageFragment
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.ItemMoviesBinding
 
-class MoviePhotoAdapter ( val movies: MutableList<Movie>, var listener: OnItemClick) : RecyclerView.Adapter<MoviePhotoAdapter.MovieViewHolder>(){
+class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>(){
 
 
      class MovieViewHolder (private val binding: ItemMoviesBinding) :  RecyclerView.ViewHolder(binding.root) {
@@ -49,15 +46,15 @@ class MoviePhotoAdapter ( val movies: MutableList<Movie>, var listener: OnItemCl
 
 
 
-    companion object {
-        private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                oldItem.id == newItem.id
-        }
-    }
+//    companion object {
+//        private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
+//            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
+//                oldItem.id == newItem.id
+//
+//            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
+//                oldItem.id == newItem.id
+//        }
+//    }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = movies[position]

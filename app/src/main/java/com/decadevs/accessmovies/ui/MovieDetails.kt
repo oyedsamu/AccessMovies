@@ -31,9 +31,9 @@ class MovieDetails : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val toolbar: Toolbar = binding.toolbar
 
-        if (activity is AppCompatActivity) {
-            (activity as AppCompatActivity).setSupportActionBar(toolbar)
-        }
+//        if (activity is AppCompatActivity) {
+//            (activity as AppCompatActivity).setSupportActionBar(toolbar)
+//        }
 
         (activity as AppCompatActivity).supportActionBar?.title = "New Title"
     }

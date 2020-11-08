@@ -1,15 +1,14 @@
-package com.decadevs.accessmovies
+package com.decadevs.accessmovies.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.decadevs.accessmovies.adapters.MoviePhotoAdapter
+import com.decadevs.accessmovies.R
+import com.decadevs.accessmovies.adapters.MovieAdapter
 import com.decadevs.accessmovies.adapters.OnItemClick
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentLandingPageBinding
@@ -24,7 +23,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
 
 //    private val viewModel by viewModels<LandingPageViewModel> ()
 
-    val adapter = MoviePhotoAdapter(mutableListOf(), this)
+    val adapter = MovieAdapter(mutableListOf(), this)
 
     private var _binding : FragmentLandingPageBinding? = null
 
@@ -76,7 +75,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
         return lists
     }
 
-    
+
     override fun onItemClick(item: Movie, position: Int) {
         Log.d("CHECKING", "clicked")
         val CONSTANT_MOVIES_ID = "MoviesId"

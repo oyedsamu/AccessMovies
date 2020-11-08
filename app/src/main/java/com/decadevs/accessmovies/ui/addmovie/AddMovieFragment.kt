@@ -1,4 +1,4 @@
-package com.decadevs.accessmovies
+package com.decadevs.accessmovies.ui.addmovie
 
 import android.app.DatePickerDialog
 import android.os.Build
@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.databinding.FragmentAddMovieBinding
 import com.decadevs.accessmovies.validation.Validation
 import java.util.*
@@ -50,7 +51,7 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
             // Specify the layout to use when the list of choices appears
             ratingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-            binding.fragmentAddMovieRatingsEt.adapter = ratingAdapter
+            binding.fragmentAddMovieCountryEt.adapter = ratingAdapter
 
 
         }
@@ -81,12 +82,10 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         // Fields required to fill
         val editTextTitle = binding.fragmentAddMovieTitleEt
-        val editTextGenre = binding.fragmentAddMovieGenreEt
-        val editTextCountry = binding.fragmentAddMovieCountryEt.selectedItem.toString() as EditText
         val editTextReleaseDate = binding.fragmentAddMovieReleaseDateEt
         val editTextTicket = binding.fragmentAddMovieTicketPriceEt
         val editTextDescription = binding.fragmentAddMovieDescription
-        val editTextRating = binding.fragmentAddMovieRatingsEt.selectedItem.toString() as EditText
+
 
 
 
@@ -96,7 +95,7 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
         // Validate user input
         binding.fragmentAddMovieAddImageBtn.setOnClickListener {
 
-           val checkUserInput = Validation(editTextTitle, editTextGenre, editTextRating, editTextCountry,
+           val checkUserInput = Validation(editTextTitle,
                    editTextReleaseDate, editTextTicket, editTextDescription )
 
 
