@@ -8,7 +8,7 @@
     tools:context=".ui.login.LoginFragment">
 
     <View
-        android:id="@+id/login_background_vw"
+        android:id="@+id/logIn_background_vw"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
@@ -21,51 +21,52 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/login_title_tv"
+        android:id="@+id/logIn_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Login"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="Login"
         android:textColor="@color/blue"
         android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="@+id/login_background_vw"
-        app:layout_constraintTop_toTopOf="@+id/login_background_vw" />
+        app:layout_constraintStart_toStartOf="@+id/logIn_background_vw"
+        app:layout_constraintTop_toTopOf="@+id/logIn_background_vw" />
 
     <TextView
-        android:id="@+id/login_subtitle_tv"
+        android:id="@+id/logIn_subtitle_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
         android:text="Enter You Details To Login"
         android:textColor="@color/white"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/login_background_vw"
-        app:layout_constraintStart_toStartOf="@+id/login_background_vw"
-        app:layout_constraintTop_toBottomOf="@+id/login_title_tv" />
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/logIn_background_vw"
+        app:layout_constraintStart_toStartOf="@+id/logIn_background_vw"
+        app:layout_constraintTop_toBottomOf="@+id/logIn_title_tv" />
+
 
     <View
-        android:id="@+id/login_formBackground_vw"
+        android:id="@+id/logIn_formBackground_vw"
         android:layout_width="match_parent"
         android:layout_height="133dp"
         android:layout_marginHorizontal="40dp"
         android:background="@drawable/form_background"
         android:layout_marginTop="150dp"
-        app:layout_constraintEnd_toEndOf="@+id/login_background_vw"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/login_background_vw"
-        app:layout_constraintTop_toTopOf="@+id/login_background_vw" />
+        app:layout_constraintEnd_toEndOf="@+id/logIn_background_vw"
+        app:layout_constraintStart_toStartOf="@+id/logIn_background_vw"
+        app:layout_constraintTop_toTopOf="@+id/logIn_background_vw" />
+
     <View
-        android:id="@+id/login_formSeperator_vw"
+        android:id="@+id/logIn_formSeperator1_vw"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="40dp"
         android:background="@drawable/form_seperator"
-        app:layout_constraintBottom_toBottomOf="@+id/login_formBackground_vw"
-        app:layout_constraintEnd_toEndOf="@+id/login_formBackground_vw"
-        app:layout_constraintTop_toTopOf="@+id/login_formBackground_vw" />
+        app:layout_constraintBottom_toBottomOf="@+id/logIn_formBackground_vw"
+        app:layout_constraintEnd_toEndOf="@+id/logIn_formBackground_vw"
+        app:layout_constraintTop_toTopOf="@+id/logIn_formBackground_vw" />
 
     <EditText
         android:id="@+id/login_email_et"
@@ -74,10 +75,12 @@
         android:hint="Your Email"
         android:maxLines="1"
         android:background="@color/transparent"
-        app:layout_constraintBottom_toTopOf="@+id/login_formSeperator_vw"
-        app:layout_constraintEnd_toEndOf="@+id/login_formBackground_vw"
-        app:layout_constraintStart_toStartOf="@+id/login_formBackground_vw"
-        app:layout_constraintTop_toTopOf="@+id/login_formBackground_vw" />
+        android:layout_marginStart="8dp"
+        android:paddingStart="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/logIn_formSeperator1_vw"
+        app:layout_constraintEnd_toEndOf="@+id/logIn_formBackground_vw"
+        app:layout_constraintStart_toStartOf="@+id/logIn_formBackground_vw"
+        app:layout_constraintTop_toTopOf="@+id/logIn_formBackground_vw" />
 
     <EditText
         android:id="@+id/login_password_et"
@@ -86,14 +89,16 @@
         android:hint="Your Password"
         android:maxLines="1"
         android:background="@color/transparent"
+        android:layout_marginStart="8dp"
+        android:paddingStart="10dp"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="@+id/login_formBackground_vw"
-        app:layout_constraintEnd_toEndOf="@+id/login_formBackground_vw"
-        app:layout_constraintStart_toStartOf="@+id/login_formBackground_vw"
-        app:layout_constraintTop_toBottomOf="@+id/login_formSeperator_vw" />
+        app:layout_constraintBottom_toBottomOf="@+id/logIn_formBackground_vw"
+        app:layout_constraintEnd_toEndOf="@+id/logIn_formBackground_vw"
+        app:layout_constraintStart_toStartOf="@+id/logIn_formBackground_vw"
+        app:layout_constraintTop_toBottomOf="@+id/logIn_formSeperator1_vw" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/login_login_btn"
+        android:id="@+id/logIn_logIn_btn"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginTop="50dp"
@@ -102,31 +107,31 @@
         app:backgroundTint="@color/blue"
         app:cornerRadius="20dp"
         android:layout_marginHorizontal="40dp"
-        app:layout_constraintEnd_toEndOf="@+id/login_background_vw"
-        app:layout_constraintStart_toStartOf="@+id/login_background_vw"
-        app:layout_constraintTop_toBottomOf="@+id/login_formBackground_vw" />
+        app:layout_constraintEnd_toEndOf="@+id/logIn_background_vw"
+        app:layout_constraintStart_toStartOf="@+id/logIn_background_vw"
+        app:layout_constraintTop_toBottomOf="@+id/logIn_formBackground_vw" />
 
     <TextView
-        android:id="@+id/login_register_tv"
+        android:id="@+id/login_signUp_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Create New Account"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/login_background_vw"
-        app:layout_constraintStart_toStartOf="@+id/login_background_vw"
-        app:layout_constraintTop_toBottomOf="@+id/login_login_btn" />
+        app:layout_constraintEnd_toEndOf="@+id/logIn_background_vw"
+        app:layout_constraintStart_toStartOf="@+id/logIn_background_vw"
+        app:layout_constraintTop_toBottomOf="@+id/logIn_logIn_btn" />
 
     <ProgressBar
-        android:id="@+id/login_progressBar_pb"
+        android:id="@+id/logIn_progressBar_pb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateTint="@color/blue"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/login_background_vw"
-        app:layout_constraintEnd_toEndOf="@+id/login_background_vw"
-        app:layout_constraintStart_toStartOf="@+id/login_background_vw"
-        app:layout_constraintTop_toBottomOf="@+id/login_register_tv" />
+        app:layout_constraintBottom_toBottomOf="@+id/logIn_background_vw"
+        app:layout_constraintEnd_toEndOf="@+id/logIn_background_vw"
+        app:layout_constraintStart_toStartOf="@+id/logIn_background_vw"
+        app:layout_constraintTop_toBottomOf="@+id/login_signUp_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

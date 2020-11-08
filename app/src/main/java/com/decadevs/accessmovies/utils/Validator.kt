@@ -1,7 +1,7 @@
 package com.decadevs.accessmovies.utils
 
 class Validator {
-    private fun checkIfEmpty(string: String): Boolean {
+    fun checkIfEmpty(string: String): Boolean {
         return string.trim().isEmpty()
     }
 
