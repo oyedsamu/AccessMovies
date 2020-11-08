@@ -31,5 +31,10 @@
         android:name="com.decadevs.accessmovies.ui.signup.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/addMovieFragment"
+        android:name="com.decadevs.accessmovies.AddMovieFragment"
+        android:label="AddMovieFragment"
+        tools:layout="@layout/fragment_add_movie"/>
 
 </navigation>

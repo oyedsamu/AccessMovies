@@ -3,6 +3,7 @@ package com.decadevs.accessmovies
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,10 +34,18 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page),
         recyclerView.layoutManager = LinearLayoutManager(activity)
         mAuth = FirebaseAuth.getInstance()
 
-//        binding.landingSignInTv.setOnClickListener {
-//            Constants.fragment = R.id.landingPage
-//            findNavController().navigate(R.id.loginFragment)
-//        }
+        binding.landingSignInTv.setOnClickListener {
+            Constants.fragment = R.id.landingPage
+            findNavController().navigate(R.id.loginFragment)
+        }
+
+        binding.landingAddMovieImgBtn.setOnClickListener {
+            findNavController().navigate(R.id.addMovieFragment)
+        }
+
+        binding.landingSignOutTv.setOnClickListener {
+            signOutConfirm(it)
+        }
 
 //        binding.testing.setOnClickListener {
 //            findNavController().navigate(R.id.addMovieFragment)
@@ -50,9 +59,9 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page),
         if (currentUser != null) {
             name = currentUser.displayName.toString()
             Constants.name = name
-//            binding.landingSignInTv.visibility = View.INVISIBLE
-//            binding.landingSignOutTv.visibility = View.VISIBLE
-//            binding.landingAddMovieImgBtn.visibility = View.VISIBLE
+            binding.landingSignInTv.visibility = View.INVISIBLE
+            binding.landingSignOutTv.visibility = View.VISIBLE
+            binding.landingAddMovieImgBtn.visibility = View.VISIBLE
         }
     }
 
@@ -91,6 +100,30 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page),
             lists.add(movie)
         }
         return lists
+    }
+
+    fun signOutConfirm(view: View) {
+        val builder = AlertDialog.Builder(view.context)
+        builder.setTitle("SIGN OUT")
+
+        //set content area
+        builder.setMessage("Are you sure you want to Sign out of ACCESS MOVIES?")
+
+        //set negative button
+        builder.setPositiveButton(
+            "SignOut") { dialog, id ->
+            // User clicked Update Now button
+            Toast.makeText(context, "Signing you out...", Toast.LENGTH_SHORT).show()
+            FirebaseAuth.getInstance().signOut()
+            findNavController().navigate(R.id.landingPage)
+
+        }
+        //set positive button
+        builder.setNegativeButton(
+            "Cancel") { dialog, id ->
+            dialog.dismiss()
+        }
+        builder.show()
     }
 
 }

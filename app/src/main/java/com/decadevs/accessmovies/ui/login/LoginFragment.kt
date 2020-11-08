@@ -46,6 +46,16 @@ class LoginFragment : Fragment() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+        binding.logInSignupBtn.setOnClickListener {
+            /** MOVE TO REGISTER SCREEN */
+            Toast.makeText(
+                this.context,
+                "Implement Code To Move To Register Fragment",
+                Toast.LENGTH_LONG
+            ).show()
+            findNavController().navigate(R.id.signUpFragment)
+        }
+
         binding.logInLogInBtn.setOnClickListener {
             val validator = Validator()
             binding.logInLogInBtn.setOnClickListener {
@@ -74,16 +84,6 @@ class LoginFragment : Fragment() {
                     ).show()
                 }
             }
-
-            binding.loginSignUpTv.setOnClickListener {
-                /** MOVE TO REGISTER SCREEN */
-                Toast.makeText(
-                    this.context,
-                    "Implement Code To Move To Register Fragment",
-                    Toast.LENGTH_LONG
-                ).show()
-                findNavController().navigate(R.id.landingPage)
-            }
         }
     }
 
@@ -99,10 +99,16 @@ class LoginFragment : Fragment() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = firebaseAuth.currentUser
-                    val name = user?.displayName
+                    val name = getNameFrom(user?.email.toString())
 
                     Constants.name = name
+                    Snackbar.make(
+                        requireView(),
+                        "$name logged in successfully",
+                        Snackbar.LENGTH_LONG
+                    ).show()
 
+                    Constants.fragment?.let { findNavController().navigate(it) }
 
                     // Go back to last screen and change Login button to Logout.
                     // Set name as name while launching the Fragment.
@@ -117,5 +123,10 @@ class LoginFragment : Fragment() {
                     ).show()
                 }
             }
+    }
+
+    fun getNameFrom(email: String): String {
+        val positAt = email.indexOf('@')
+        return email.substring(0, positAt)
     }
 }
