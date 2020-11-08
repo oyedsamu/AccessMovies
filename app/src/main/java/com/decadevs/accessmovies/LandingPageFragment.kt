@@ -61,7 +61,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
 
         var lists = mutableListOf<Movie>()
         for (i in 0..num){
-            val movie = Movie(id= "aa", name= "seen", description = "gthe", releaseDate = "asas", rating = "gge", ticketPrice = "gg", country = "thaa", genre = "asas", photo = R.drawable.ic_baseline_add_business)
+            val movie = Movie(id= "aa", name= "seen", description = "gthe", releaseDate = "asas", rating = "gge", ticketPrice = "gg", country = "thaa", genre = "asas", photo = R.drawable.sixunderground)
           lists.add(movie)
         }
 

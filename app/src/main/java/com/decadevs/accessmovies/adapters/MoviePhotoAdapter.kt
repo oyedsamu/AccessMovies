@@ -32,7 +32,7 @@ class MoviePhotoAdapter ( val movies: MutableList<Movie>) : RecyclerView.Adapter
         fun bind (movie : Movie) {
             binding.apply {
                 Glide.with(itemView)
-                    .load(movie.photo)
+                    .load(R.drawable.sixunderground)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_error)
