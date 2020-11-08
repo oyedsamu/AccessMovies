@@ -76,15 +76,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
         return lists
     }
 
-
-
-
-
-
-
-
-
-
+    
     override fun onItemClick(item: Movie, position: Int) {
         Log.d("CHECKING", "clicked")
         val CONSTANT_MOVIES_ID = "MoviesId"
