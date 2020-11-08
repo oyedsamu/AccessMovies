@@ -18,5 +18,6 @@
     <string name="description_str">Description</string>
     <string name="add_photo_str">Add Photo</string>
     <string name="add_movie_str">Add Movie</string>
+    <string name="add_movie_str_major">ADD MOVIE</string>
 
 </resources>
