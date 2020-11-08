@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.decadevs.accessmovies.data.Comment
+import com.decadevs.accessmovies.data.CommentR
 import com.decadevs.accessmovies.data.Movie
+import com.decadevs.accessmovies.data.MovieR
 import com.decadevs.accessmovies.room.RMDatabase
 import com.decadevs.accessmovies.room.RoomRepository
 import kotlinx.coroutines.Dispatchers
@@ -14,12 +16,12 @@ import kotlinx.coroutines.launch
 
 class RoomViewModel(application: Application): AndroidViewModel(application) {
 
-    private var _allMovies: MutableLiveData<List<Movie>>? = null
-    val allMovies: LiveData<List<Movie>>?
+    private var _allMovies: LiveData<List<MovieR>>? = null
+    val allMovies: LiveData<List<MovieR>>?
         get() = _allMovies
 
-    private var _allComments: MutableLiveData<List<Comment>>? = null
-    val allComments: LiveData<List<Comment>>?
+    private var _allComments: LiveData<List<CommentR>>? = null
+    val allComments: LiveData<List<CommentR>>?
         get() = _allComments
 
     private val roomRepository: RoomRepository
@@ -38,14 +40,14 @@ class RoomViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /** ADD MOVIE TO DATABASE */
-    fun addMovie(movie: Movie) {
+    fun addMovie(movie: MovieR) {
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.addMovie(movie)
         }
     }
 
     /** ADD COMMENT TO DATABASE */
-    fun addComment(comment: Comment) {
+    fun addComment(comment: CommentR) {
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.addComment(comment)
         }

@@ -5,9 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.decadevs.accessmovies.data.Comment
+import com.decadevs.accessmovies.data.CommentR
 import com.decadevs.accessmovies.data.Movie
+import com.decadevs.accessmovies.data.MovieR
 
-@Database(entities = [Movie::class, Comment::class], version = 1, exportSchema = false)
+@Database(entities = [MovieR::class, CommentR::class], version = 1, exportSchema = false)
 abstract class RMDatabase(): RoomDatabase() {
     abstract fun movieDao(): MovieDao
     abstract fun commentDao(): CommentDao

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/blue"
     tools:context=".LandingPageFragment">
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/landing_heading_ll"
         android:layout_width="match_parent"
@@ -16,7 +15,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <TextView
             android:id="@+id/landing_signOut_tv"
             android:layout_width="wrap_content"
@@ -46,9 +44,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:layout_weight="1"/>
-
     </androidx.appcompat.widget.LinearLayoutCompat>
-
     <ImageView
         android:id="@+id/landing_addMovie_imgBtn"
         android:layout_width="50dp"
@@ -73,15 +69,23 @@
         app:layout_constraintTop_toBottomOf="@+id/landing_heading_ll"
         tools:listitem="@layout/item_movies" />
 
-    <!--    <ProgressBar-->
-    <!--        android:id="@+id/progress_bar"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/recycler_view"-->
-    <!--        tools:visibility="visible" />-->
 
+    <Button
+        android:id="@+id/testing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="go to add movie screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progress_bar"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/recycler_view"-->
+<!--        tools:visibility="visible" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

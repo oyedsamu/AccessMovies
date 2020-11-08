@@ -40,7 +40,7 @@ class MovieViewModel(): ViewModel() {
     fun addNewMovie(movie: Movie) {
         /** ADD NEW MOVIE */
         movie.id = moviesDatabase.push().key.toString()
-        moviesDatabase.child(movie.id!!).setValue(movie)
+        moviesDatabase.child(movie.id!!.toString()).setValue(movie)
             .addOnCompleteListener{
                 /** HANDLE RESULT */
                 if(it.isSuccessful) {
@@ -73,7 +73,7 @@ class MovieViewModel(): ViewModel() {
     fun addNewComment(comment: Comment) {
         /** ADD NEW COMMENT */
         comment.id = commentsDatabase.push().key.toString()
-        commentsDatabase.child(comment.id!!).setValue(comment)
+        commentsDatabase.child(comment.id).setValue(comment)
             .addOnCompleteListener{
                 /** HANDLE RESULT */
                 if(it.isSuccessful) {

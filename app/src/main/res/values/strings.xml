@@ -2,9 +2,23 @@
     <string name="app_name">Access Movies</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="opps_result_could_not_be_loaded_str">load_state_message</string>
     <string name="retry_str">retry_str</string>
+
     <string name="onboarding1_title_str">Get The First Movie And TV Information</string>
     <string name="profile_page">Profile Page</string>
     <string name="dummy_text_desc_tv">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</string>
+    <string name="title_str">Title</string>
+    <string name="genre_str">Genre</string>
+    <string name="rating_str">Rating</string>
+    <string name="country_str">Country</string>
+    <string name="release_date_str">Release date</string>
+    <string name="ticket_price_str">Ticket Price</string>
+    <string name="description_str">Description</string>
+    <string name="add_photo_str">Add Photo</string>
+    <string name="add_movie_str">Add Movie</string>
+    <string name="add_movie_str_major">ADD MOVIE</string>
+    <string name="price_str">Price:</string>
+
 </resources>

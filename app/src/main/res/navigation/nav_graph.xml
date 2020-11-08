@@ -5,11 +5,10 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/onboardingFragment">
 
-
     <fragment
         android:id="@+id/landingPage"
         android:name="com.decadevs.accessmovies.LandingPageFragment"
-        android:label="fragment_landing_page"
+        android:label="Movie"
         tools:layout="@layout/fragment_landing_page" />
     <fragment
         android:id="@+id/onboardingFragment"
@@ -31,4 +30,10 @@
         android:name="com.decadevs.accessmovies.ui.signup.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
+
+    <fragment
+            android:id="@+id/addMovieFragment"
+            android:name="com.decadevs.accessmovies.AddMovieFragment"
+            android:label="Add Image"
+            tools:layout="@layout/fragment_add_movie" />
 </navigation>
