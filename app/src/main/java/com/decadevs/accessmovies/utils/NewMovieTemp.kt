@@ -1,16 +1,15 @@
-package com.decadevs.accessmovies.utils
-
-import androidx.navigation.fragment.findNavController
-import com.decadevs.accessmovies.R
-import com.decadevs.accessmovies.data.Movie
-import com.decadevs.accessmovies.viewmodel.NewMovieViewModel
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.database.FirebaseDatabase
-
-
-class NewMovieTemp() {
-
-//    lateinit var newMovieViewModel: NewMovieViewModel
+//package com.decadevs.accessmovies.utils
+//
+//import com.decadevs.accessmovies.R
+//import com.decadevs.accessmovies.data.Movie
+//import com.decadevs.accessmovies.viewmodel.MovieViewModel
+//import com.google.android.material.snackbar.Snackbar
+//import com.google.firebase.database.FirebaseDatabase
+//
+//
+//class NewMovieTemp() {
+//
+//    lateinit var newMovieViewModel: MovieViewModel
 //    val database = FirebaseDatabase.getInstance().reference
 //
 //    newMoviewViewModel = ViewmodelProvider(this).get(NewMovieViewModel::class.java)
@@ -46,7 +45,7 @@ class NewMovieTemp() {
 //            findNavController().navigate(R.id.landingPage)
 //        })
 //    }
-}
-
-
-
+//}
+//
+//
+//

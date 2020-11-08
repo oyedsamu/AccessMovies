@@ -4,17 +4,19 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.decadevs.accessmovies.data.Comment
 import com.decadevs.accessmovies.data.Movie
 
-@Database(entities = [Movie::class], version = 1, exportSchema = false)
-abstract class MoviesDatabase(): RoomDatabase() {
+@Database(entities = [Movie::class, Comment::class], version = 1, exportSchema = false)
+abstract class RMDatabase(): RoomDatabase() {
     abstract fun movieDao(): MovieDao
+    abstract fun commentDao(): CommentDao
 
     companion object {
         @Volatile
-        private var INSTANCE: MoviesDatabase? = null
+        private var INSTANCE: RMDatabase? = null
 
-        fun getDatabase(context: Context): MoviesDatabase {
+        fun getDatabase(context: Context): RMDatabase {
             val tempInstance = INSTANCE
             if(tempInstance != null) {
                 return tempInstance
@@ -24,7 +26,7 @@ abstract class MoviesDatabase(): RoomDatabase() {
             synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    MoviesDatabase::class.java,
+                    RMDatabase::class.java,
                     "movies_database"
                 ).build()
 
