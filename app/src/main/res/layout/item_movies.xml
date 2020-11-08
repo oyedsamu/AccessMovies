@@ -37,17 +37,27 @@
 
 
                         <TextView
+                            android:id="@+id/item_movie_genre_placeholder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/genre_str_item"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="@+id/item_movie_title"
+                            app:layout_constraintTop_toBottomOf="@+id/item_movie_title" />
+
+                        <TextView
                             android:id="@+id/item_movie_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginStart="5dp"
                             android:layout_marginTop="10dp"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
                             android:textColor="@android:color/black"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
@@ -59,32 +69,38 @@
                             android:id="@+id/item_movie_genre"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
                             android:textColor="@android:color/black"
                             android:textSize="14sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.02"
-                            app:layout_constraintStart_toEndOf="@+id/item_movie_image"
-                            app:layout_constraintTop_toBottomOf="@+id/item_movie_title"
+                            app:layout_constraintBottom_toBottomOf="@+id/item_movie_genre_placeholder"
+                            app:layout_constraintStart_toEndOf="@+id/item_movie_genre_placeholder"
+                            app:layout_constraintTop_toTopOf="@+id/item_movie_genre_placeholder"
+                            app:layout_constraintVertical_bias="1.0"
                             tools:text="Views: 100" />
+
+                        <TextView
+                            android:id="@+id/item_movie_rating_placeholder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:paddingStart="5dp"
+                            android:text="@string/rating_str_item"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="@+id/item_movie_genre_placeholder"
+                            app:layout_constraintTop_toBottomOf="@+id/item_movie_genre_placeholder" />
 
                         <TextView
                             android:id="@+id/item_movie_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
                             android:textColor="@android:color/black"
                             android:textSize="14sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/item_movie_image"
-                            app:layout_constraintTop_toBottomOf="@+id/item_movie_genre"
+                            app:layout_constraintBottom_toBottomOf="@+id/item_movie_rating_placeholder"
+                            app:layout_constraintStart_toEndOf="@+id/item_movie_rating_placeholder"
+                            app:layout_constraintTop_toTopOf="@+id/item_movie_rating_placeholder"
                             tools:text="Release Date: 16 Feb 2018" />
 
                         <TextView
