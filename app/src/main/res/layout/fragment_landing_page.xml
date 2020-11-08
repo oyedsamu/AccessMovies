@@ -6,18 +6,67 @@
         android:background="@color/blue"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".LandingPageFragment">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/landing_heading_ll"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/landing_signOut_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Sign Out"
+            android:visibility="invisible"
+            android:gravity="start|center"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/landing_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ACCESS MOVIES"
+            android:gravity="center"
+            android:textColor="@color/orange"
+            android:textStyle="bold"
+            android:textSize="35sp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/landing_SignIn_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Sign In"
+            android:gravity="end|center"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_weight="1"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <ImageView
+        android:id="@+id/landing_addMovie_imgBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_add"
+        android:visibility="invisible"
+        android:paddingEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/landing_heading_ll"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/landing_heading_ll" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/landing_heading_ll"
         tools:listitem="@layout/item_movies" />
 
 
