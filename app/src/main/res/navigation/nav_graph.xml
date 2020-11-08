@@ -17,4 +17,9 @@
             android:name="com.decadevs.accessmovies.AddMovieFragment"
             android:label="Add Image"
             tools:layout="@layout/fragment_add_movie" />
+    <fragment
+        android:id="@+id/movieDetails"
+        android:name="com.decadevs.accessmovies.ui.MovieDetails"
+        android:label="fragment_moviedetails"
+        tools:layout="@layout/fragment_moviedetails" />
 </navigation>

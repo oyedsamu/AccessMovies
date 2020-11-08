@@ -1,35 +1,30 @@
 package com.decadevs.accessmovies.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.decadevs.accessmovies.LandingPageFragment
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.ItemMoviesBinding
 
-class MoviePhotoAdapter ( val movies: MutableList<Movie>) : RecyclerView.Adapter<MoviePhotoAdapter.MovieViewHolder>(){
+class MoviePhotoAdapter ( val movies: MutableList<Movie>, var listener: OnItemClick) : RecyclerView.Adapter<MoviePhotoAdapter.MovieViewHolder>(){
 
 
-    inner class MovieViewHolder (private val binding: ItemMoviesBinding) : RecyclerView.ViewHolder(binding.root) {
+     class MovieViewHolder (private val binding: ItemMoviesBinding) :  RecyclerView.ViewHolder(binding.root) {
 
-        init {
-            binding.root.setOnClickListener {
-                val position = bindingAdapterPosition
-//                if (position != RecyclerView.NO_POSITION) {
-//                    val item = getItem(position)
-//
-//                    if (item != null) {
-//                        listener.onItemClick(item)
-//                    }
-//
-//                }
-            }
-        }
+         private lateinit var movie: Movie
 
-        fun bind (movie : Movie) {
+
+
+        fun bind (movie : Movie, action: OnItemClick) {
+
+            this.movie  = movie
             binding.apply {
                 Glide.with(itemView)
                     .load(R.drawable.sixunderground)
@@ -43,13 +38,16 @@ class MoviePhotoAdapter ( val movies: MutableList<Movie>) : RecyclerView.Adapter
                 itemMovieRating.text = movie.rating
                 itemPriceTicket.text = movie.ticketPrice
             }
+
+            itemView.setOnClickListener {
+              action.onItemClick(movie, adapterPosition)
+            }
         }
 
-    }
 
-    interface OnItemClickListener {
-        fun onItemClick(movie: Movie)
-    }
+     }
+
+
 
     companion object {
         private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
@@ -65,7 +63,7 @@ class MoviePhotoAdapter ( val movies: MutableList<Movie>) : RecyclerView.Adapter
         val currentItem = movies[position]
 
         if (currentItem != null ) {
-            holder.bind(currentItem)
+            holder.bind(currentItem, listener)
         }
     }
 

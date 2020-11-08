@@ -1,11 +1,16 @@
 package com.decadevs.accessmovies
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decadevs.accessmovies.adapters.MoviePhotoAdapter
+import com.decadevs.accessmovies.adapters.OnItemClick
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentLandingPageBinding
 
@@ -15,11 +20,11 @@ import com.decadevs.accessmovies.databinding.FragmentLandingPageBinding
  * Use the [LandingPageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhotoAdapter.OnItemClickListener {
+class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClick {
 
 //    private val viewModel by viewModels<LandingPageViewModel> ()
 
-    val adapter = MoviePhotoAdapter(mutableListOf())
+    val adapter = MoviePhotoAdapter(mutableListOf(), this)
 
     private var _binding : FragmentLandingPageBinding? = null
 
@@ -44,9 +49,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
 
     }
 
-    override fun onItemClick(movie: Movie) {
 
-    }
 
 
     override fun onResume() {
@@ -70,8 +73,24 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
           lists.add(movie)
         }
 
-
         return lists
     }
+
+
+
+
+
+
+
+
+
+
+    override fun onItemClick(item: Movie, position: Int) {
+        Log.d("CHECKING", "clicked")
+        val CONSTANT_MOVIES_ID = "MoviesId"
+        val bundle = bundleOf(CONSTANT_MOVIES_ID to item.id)
+        findNavController().navigate(R.id.movieDetails)
+    }
+
 
 }
