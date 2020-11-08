@@ -107,6 +107,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
+        android:drawableEnd="@drawable/ic_date_picker"
         android:background="@drawable/add_movie_button_border"
         android:hint="@string/release_date_str"
         android:paddingTop="20dp"

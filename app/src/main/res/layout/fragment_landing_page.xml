@@ -73,4 +73,12 @@
         app:layout_constraintTop_toBottomOf="@+id/landing_heading_ll"
         tools:listitem="@layout/item_movies" />
 
+    <Button
+        android:id="@+id/testing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

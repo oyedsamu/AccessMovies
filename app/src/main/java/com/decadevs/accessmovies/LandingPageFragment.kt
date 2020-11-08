@@ -41,6 +41,12 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
 
 
 
+
+        binding.testing.setOnClickListener {
+            findNavController().navigate(R.id.addMovieFragment)
+        }
+
+
     }
 
 
