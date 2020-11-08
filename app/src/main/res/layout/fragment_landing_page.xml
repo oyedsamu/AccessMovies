@@ -54,7 +54,6 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/ic_add"
-        android:backgroundTint=""
         android:visibility="invisible"
         android:paddingEnd="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/landing_heading_ll"
