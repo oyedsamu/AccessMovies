@@ -79,7 +79,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/ratings"
+                    android:id="@+id/fragment_add_movie_ratings_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

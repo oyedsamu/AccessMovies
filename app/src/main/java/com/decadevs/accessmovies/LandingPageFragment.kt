@@ -6,19 +6,21 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.decadevs.accessmovies.adapters.MoviePhotoAdapter
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentLandingPageBinding
 import com.decadevs.accessmovies.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 
 
-class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhotoAdapter.OnItemClickListener {
+class LandingPageFragment : Fragment(R.layout.fragment_landing_page),
+    MoviePhotoAdapter.OnItemClickListener {
 
 //    private val viewModel by viewModels<LandingPageViewModel> ()
 
     private lateinit var mAuth: FirebaseAuth
     val adapter = MoviePhotoAdapter(mutableListOf())
-    private var _binding : FragmentLandingPageBinding? = null
+    private var _binding: FragmentLandingPageBinding? = null
     private val binding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,13 +37,17 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
 //            Constants.fragment = R.id.landingPage
 //            findNavController().navigate(R.id.loginFragment)
 //        }
+
+//        binding.testing.setOnClickListener {
+//            findNavController().navigate(R.id.addMovieFragment)
+//        }
     }
 
     override fun onStart() {
         super.onStart()
         val name: String
         val currentUser = mAuth.currentUser
-        if (currentUser != null){
+        if (currentUser != null) {
             name = currentUser.displayName.toString()
             Constants.name = name
 //            binding.landingSignInTv.visibility = View.INVISIBLE
@@ -49,6 +55,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
 //            binding.landingAddMovieImgBtn.visibility = View.VISIBLE
         }
     }
+
     override fun onItemClick(movie: Movie) {
 
     }
@@ -69,19 +76,19 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
 
     fun getMovies(num: Int): MutableList<Movie> {
         val lists = mutableListOf<Movie>()
-        for (i in 0..num){
+        for (i in 0..num) {
             val movie = Movie(
                 id = "aa",
-                name = "seen",
-                description = "gthe",
-                releaseDate = "asas",
-                rating = "gge",
-                ticketPrice = "gg",
-                country = "thaa",
-                genre = "asas",
-                photo = R.drawable.ic_baseline_add_business
+                name = "From Russia With Love",
+                description = "What love does",
+                releaseDate = "2020",
+                rating = "4",
+                ticketPrice = "$88",
+                country = "California",
+                genre = "Action",
+                photo = R.drawable.sixunderground
             )
-          lists.add(movie)
+            lists.add(movie)
         }
         return lists
     }

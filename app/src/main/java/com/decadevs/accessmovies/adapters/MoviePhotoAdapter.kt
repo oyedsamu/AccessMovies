@@ -1,13 +1,12 @@
-package com.decadevs.accessmovies
+package com.decadevs.accessmovies.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.AdapterView
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.ItemMoviesBinding
 
@@ -33,7 +32,7 @@ class MoviePhotoAdapter ( val movies: MutableList<Movie>) : RecyclerView.Adapter
         fun bind (movie : Movie) {
             binding.apply {
                 Glide.with(itemView)
-                    .load(movie.photo)
+                    .load(R.drawable.sixunderground)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_error)
@@ -42,7 +41,7 @@ class MoviePhotoAdapter ( val movies: MutableList<Movie>) : RecyclerView.Adapter
                 itemMovieTitle.text = movie.name
                 itemMovieGenre.text = movie.genre
                 itemMovieRating.text = movie.rating
-                itemPriceTicket.text = movie.rating
+                itemPriceTicket.text = movie.ticketPrice
             }
         }
 
