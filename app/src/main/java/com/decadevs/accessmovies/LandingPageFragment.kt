@@ -3,6 +3,7 @@ package com.decadevs.accessmovies
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decadevs.accessmovies.adapters.MoviePhotoAdapter
 import com.decadevs.accessmovies.data.Movie
@@ -35,6 +36,10 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), MoviePhoto
 
 
 
+
+        binding.testing.setOnClickListener {
+            findNavController().navigate(R.id.addMovieFragment)
+        }
 
 
     }

@@ -24,6 +24,9 @@ class AddMovieFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentAddMovieBinding.inflate(inflater, container, false)
 
+        /** set navigation arrow from drawable **/
+        binding.fragmentAddMovieToolbar.toolbarFragment.setNavigationIcon(R.drawable.ic_arrow_back_)
+
 
         return binding.root
 
