@@ -23,5 +23,7 @@
     <string name="sign_in_str">Sign In</string>
     <string name="rating_str_item">Rating:</string>
     <string name="genre_str_item">Genre:</string>
+    <string name="access_movies_str">ACCESS MOVIES</string>
+    <string name="sign_out_str">Sign Out</string>
 
 </resources>
