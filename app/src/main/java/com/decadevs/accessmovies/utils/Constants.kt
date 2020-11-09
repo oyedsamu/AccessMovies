@@ -4,5 +4,6 @@ class Constants {
     companion object {
         var name: String? = null
         var fragment: Int? = null
+        var movieId: String? = null
     }
 }
