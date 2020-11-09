@@ -1,44 +1,45 @@
 package com.decadevs.accessmovies.ui.addmovie
 
-import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
-import android.content.ActivityNotFoundException
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.decadevs.accessmovies.R
+import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentAddMovieBinding
 import com.decadevs.accessmovies.validation.Validation
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.util.*
-import java.util.jar.Manifest
 
 
 class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
 
-    private var _binding : FragmentAddMovieBinding? = null
+    private var _binding: FragmentAddMovieBinding? = null
 
 
     private val binding get() = _binding!!
 
     private lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
 
-    private lateinit var date : String
+    private lateinit var date: String
 
-
+    private var mStorageRef: StorageReference? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,8 +47,10 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentAddMovieBinding.inflate(inflater, container, false)
 
@@ -55,15 +58,12 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
         binding.fragmentAddMovieToolbar.toolbarFragment.setNavigationIcon(R.drawable.ic_arrow_back_)
 
 
-
-
-
         /** Array adapter for spinner drop down for sex **/
         ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.rating,
-                android.R.layout.simple_spinner_item
-        ).also {ratingAdapter ->
+            requireContext(),
+            R.array.rating,
+            android.R.layout.simple_spinner_item
+        ).also { ratingAdapter ->
             // Specify the layout to use when the list of choices appears
             ratingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -74,10 +74,10 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         /** Array adapter for spinner drop down for sex **/
         ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.country,
-                android.R.layout.simple_spinner_item
-        ).also {countryAdapter ->
+            requireContext(),
+            R.array.country,
+            android.R.layout.simple_spinner_item
+        ).also { countryAdapter ->
             // Specify the layout to use when the list of choices appears
             countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -95,9 +95,6 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
 
-
-
-
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -107,6 +104,7 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val editTextReleaseDate = binding.fragmentAddMovieReleaseDateEt
         val editTextTicket = binding.fragmentAddMovieTicketPriceEt
         val editTextDescription = binding.fragmentAddMovieDescription
+        mStorageRef = FirebaseStorage.getInstance().reference
 
 
         binding.fragmentAddMovieToolbar.toolbarFragment.setOnClickListener {
@@ -114,20 +112,13 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
 
-
-
-
-
-
-
-
-
         // Validate user input
         binding.fragmentAddMovieAddImageBtn.setOnClickListener {
 
-           val checkUserInput = Validation(editTextTitle,
-                   editTextReleaseDate, editTextTicket, editTextDescription )
-
+            val checkUserInput = Validation(
+                editTextTitle,
+                editTextReleaseDate, editTextTicket, editTextDescription
+            )
 
 
             val actionCb = binding.fragmentAddMovieGenreAction.isChecked
@@ -142,51 +133,54 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
             var result = ""
 
             if (actionCb) {
-                result += "Action "
+                result += "Action|"
             }
 
             if (comedyCb) {
-                result += "Comedy "
+                result += "Comedy|"
             }
 
             if (dramaCb) {
-                result += "Drama "
+                result += "Drama|"
             }
 
             if (fantasyCb) {
-                result += "Fantasy "
+                result += "Fantasy|"
             }
 
             if (horrorCb) {
-                result += "Horror "
+                result += "Horror"
             }
 
             if (mysteryCb) {
-                result += "Mystery "
+                result += "Mystery|"
             }
 
             if (romanceCb) {
-                result += "Romance "
+                result += "Romance|"
             }
 
-            if(thrillerCb) {
-                result += "Thriller"
+            if (thrillerCb) {
+                result += "Thriller|"
             }
 
 
-            if (checkUserInput != null)  {
+            if (checkUserInput != null) {
                 checkUserInput.error = "Field required"
 
-            } else if(result.isEmpty()) {
-                Toast.makeText(requireContext(), "Click at least a genre", Toast.LENGTH_SHORT).show()
+            } else if (result.isEmpty()) {
+                Toast.makeText(requireContext(), "Click at least a genre", Toast.LENGTH_SHORT)
+                    .show()
             } else {
+
                 findNavController().navigate(R.id.landingPage)
             }
 
+            result = result.substring(0, result.length - 1)
+
+            val movie = Movie("1")
+
         }
-
-
-
 
 
         val dateButton = binding.fragmentAddMovieReleaseDateEt
@@ -198,15 +192,11 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         /** Date set listener **/
         dateSetListener = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
-            date = "${month+1}/$day/$year"
+            date = "${month + 1}/$day/$year"
             dateButton.setText(date)
         }
 
-        }
-
-
-
-
+    }
 
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -227,35 +217,37 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         /** Date dialog picker style **/
-        val dialog = DatePickerDialog(requireContext(),
-                android.R.style.ThemeOverlay_Material_Dialog_Alert,
-                dateSetListener,year, month,day
+        val dialog = DatePickerDialog(
+            requireContext(),
+            android.R.style.ThemeOverlay_Material_Dialog_Alert,
+            dateSetListener, year, month, day
         )
         dialog.show()
 
     }
 
-    private fun checkRunTimePermission () {
+    private fun checkRunTimePermission() {
         //check runtime permission
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                    PackageManager.PERMISSION_DENIED){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                ) ==
+                PackageManager.PERMISSION_DENIED
+            ) {
                 //permission denied
                 val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE);
                 //show popup to request runtime permission
                 requestPermissions(permissions, PERMISSION_CODE);
-            }
-            else{
+            } else {
                 //permission already granted
                 pickImageFromGallery();
             }
-        }
-        else{
+        } else {
             //system OS is < Marshmallow
             pickImageFromGallery();
         }
     }
-
 
 
     private fun pickImageFromGallery() {
@@ -268,20 +260,25 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
     companion object {
         //image pick code
         private val IMAGE_PICK_CODE = 1000;
+
         //Permission code
         private val PERMISSION_CODE = 1001;
     }
 
     //handle requested permission result
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when(requestCode){
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
             PERMISSION_CODE -> {
-                if (grantResults.size >0 && grantResults[0] ==
-                        PackageManager.PERMISSION_GRANTED){
+                if (grantResults.size > 0 && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
                     //permission from popup granted
                     pickImageFromGallery()
-                }
-                else{
+                } else {
                     //permission from popup denied
                     Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
                 }
@@ -292,7 +289,7 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     //handle result of picked image
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
 
             val imageUri = data?.data
 
@@ -305,8 +302,14 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
 
-
-
+    fun uploadImage(imageUri: Uri?){
+        if (imageUri != null){
+            var progress = ProgressDialog(context)
+            progress.setTitle("Uploading your movie...")
+            progress.show()
+            var imageRef = mStorageRef?.child()
+        }
+    }
 
 }
 

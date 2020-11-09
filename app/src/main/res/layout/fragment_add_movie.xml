@@ -22,15 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="180dp"
-        android:layout_height="300dp"
-
-        >
-
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="match_parent"
@@ -167,6 +158,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/fragment_add_movie_up_photo_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_add_movie_description">
 
         <TextView
@@ -255,7 +248,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/custom_button_outline_bg"
         android:paddingStart="20dp"
         android:paddingTop="10dp"
@@ -289,6 +282,7 @@
         android:id="@+id/fragment_add_movie_user_movie"
         android:layout_width="125dp"
         android:layout_height="125dp"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="8dp"
         android:scaleType="fitXY"
         app:layout_constraintStart_toEndOf="@+id/fragment_add_movie_up_photo_btn"

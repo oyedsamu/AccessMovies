@@ -14,10 +14,3 @@ data class Movie (
 //    val comments: List<Comment> = arrayListOf()
 )
 
-data class Comment (
-    val id: String,
-    val name: String,
-    val comment: String,
-    val movieId: String
-)
-
