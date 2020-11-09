@@ -17,7 +17,7 @@
     <string name="add_photo_str">Add Photo</string>
     <string name="add_movie_str">Add Movie</string>
     <string name="add_movie_str_major">ADD MOVIE</string>
-    <string name="price_str">Price:</string>
+    <string name="price_str">Price: $</string>
     <string name="sign_in_str">Sign In</string>
     <string name="rating_str_item">Rating:</string>
     <string name="genre_str_item">Genre:</string>

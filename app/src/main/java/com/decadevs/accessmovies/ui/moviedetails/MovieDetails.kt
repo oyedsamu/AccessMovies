@@ -12,6 +12,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.Comment
 import com.decadevs.accessmovies.databinding.FragmentMoviedetailsBinding
 import com.decadevs.accessmovies.utils.Constants
@@ -32,12 +34,18 @@ class MovieDetails : Fragment() {
     private lateinit var movieViewModel: MovieViewModel
     var commentsDatabase = FirebaseDatabase.getInstance().getReference("Comments");
 
+    //        val movieId = bundle?.getString("MoviesId")!!
+    val movieId = Constants.movieId
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentMoviedetailsBinding.inflate(inflater, container, false)
+
+        Toast.makeText(this.context, "$movieId", Toast.LENGTH_SHORT).show()
+
         return binding.root
     }
 
@@ -66,9 +74,6 @@ class MovieDetails : Fragment() {
 
         val bundle = arguments
 
-        val movieId = bundle?.getString("MoviesId")!!
-        Toast.makeText(this.context, "$movieId", Toast.LENGTH_SHORT).show()
-
 
             if (currentUser != null) {
             name = GetNameFromEmail().getNameFrom(currentUser.email.toString())
@@ -81,13 +86,19 @@ class MovieDetails : Fragment() {
             // Implement Onclick listener for the button here
             binding.movieCommentSubmitButton.setOnClickListener {
                 val comment = binding.movieCommentEt.text.toString()
-                addComment(name, comment, movieId)
+//                addComment(name, comment, movieId)
             }
         } else {
             /** MAKE COMMENT BUTTON TEXT TO LOGIN */
+            binding.movieCommentSubmitButton.text = "Login"
             /** MAKE COMMENT BUTTON LOG IN USER */
+            binding.movieCommentSubmitButton.setOnClickListener {
+                findNavController().navigate(R.id.loginFragment)
+            }
             /** ADD HINT TO COMMENT BOX TO TELL USER TO LOGIN */
+            binding.movieCommentEt.hint = "Log Into Your Account To Add Comments."
             /** DISABLE COMMENT BOX */
+            binding.movieCommentEt.isFocusable = false
         }
     }
 
@@ -135,8 +146,15 @@ class MovieDetails : Fragment() {
                     allComments.add(Comment("1", movieId, username, comment))
                 }
                 Log.d("allData", "$allComments")
-                allComments.reverse()
+                val movieComments = arrayListOf<Comment>()
+                /** GET COMMENTS FOR CURRENT MOVIE */
+                for(comment in allComments) {
+                    if(comment.movieId == movieId) {
+                        movieComments.add(comment)
+                    }
+                }
                 /** UPDATE COMMENTS RECYCLER VIEW */
+                movieComments.reverse()
 
             }
 
