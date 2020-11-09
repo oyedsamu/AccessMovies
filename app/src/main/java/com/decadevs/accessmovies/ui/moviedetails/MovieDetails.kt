@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -62,7 +63,14 @@ class MovieDetails : Fragment() {
         super.onStart()
         val name: String
         val currentUser = mAuth.currentUser
-        if (currentUser != null) {
+
+        val bundle = arguments
+
+        val movieId = bundle?.getString("MoviesId")!!
+        Toast.makeText(this.context, "$movieId", Toast.LENGTH_SHORT).show()
+
+
+            if (currentUser != null) {
             name = GetNameFromEmail().getNameFrom(currentUser.email.toString())
             Constants.name = name
 //            binding.landingSignInTv.visibility = View.INVISIBLE
@@ -73,7 +81,7 @@ class MovieDetails : Fragment() {
             // Implement Onclick listener for the button here
             binding.movieCommentSubmitButton.setOnClickListener {
                 val comment = binding.movieCommentEt.text.toString()
-                addComment(name, comment)
+                addComment(name, comment, movieId)
             }
         } else {
             /** MAKE COMMENT BUTTON TEXT TO LOGIN */
@@ -83,14 +91,16 @@ class MovieDetails : Fragment() {
         }
     }
 
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    fun addComment(name: String, comment: String) {
+    fun addComment(name: String, comment: String, movieId: String) {
         /** ADD NEW COMMENT TO DATABASE */
-        val comment = Comment("1", "3", name, "i love movies")
+        val comment = Comment("1", movieId, name, comment)
         movieViewModel.addNewComment(comment)
 
         /** OBSERVE RESPONSE */
@@ -125,6 +135,7 @@ class MovieDetails : Fragment() {
                     allComments.add(Comment("1", movieId, username, comment))
                 }
                 Log.d("allData", "$allComments")
+                allComments.reverse()
                 /** UPDATE COMMENTS RECYCLER VIEW */
 
             }

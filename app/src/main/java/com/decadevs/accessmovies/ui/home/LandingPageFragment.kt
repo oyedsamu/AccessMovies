@@ -34,9 +34,7 @@ import com.google.firebase.database.ValueEventListener
  */
 class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClick {
 
-//    private val viewModel by viewModels<LandingPageViewModel> ()
-
-    private val adapter = MovieAdapter(mutableListOf(), this)
+//    private val adapter = MovieAdapter(mutableListOf(), this)
     var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies");
     private lateinit var mAuth: FirebaseAuth
 
@@ -54,9 +52,10 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
             /** SHOW STATUS BAR */
             showStatusBar()
 
-            val recyclerView = binding.recyclerView
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager = LinearLayoutManager(activity)
+//            val recyclerView = binding.recyclerView
+//            recyclerView.adapter = adapter
+//            recyclerView.layoutManager = LinearLayoutManager(activity)
+
             mAuth = FirebaseAuth.getInstance()
 
             binding.landingSignInTv.setOnClickListener {
@@ -141,8 +140,12 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                     allMovies.add(Movie(id, name, description, releaseDate, rating, ticketPrice, country, genre, photo))
                 }
                 Log.d("allMovies", "$allMovies")
+                allMovies.reverse()
                 /** UPDATE MOVIES RECYCLER VIEW */
-
+                val recyclerView = binding.recyclerView
+                val adapter = MovieAdapter(allMovies.toMutableList(), this@LandingPageFragment)
+                recyclerView.adapter = adapter
+                recyclerView.layoutManager = LinearLayoutManager(activity)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
