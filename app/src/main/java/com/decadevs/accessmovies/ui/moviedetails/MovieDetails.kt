@@ -1,6 +1,8 @@
 package com.decadevs.accessmovies.ui.moviedetails
 
 import android.content.ContentValues
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.palette.graphics.Palette
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.Comment
 import com.decadevs.accessmovies.databinding.FragmentMoviedetailsBinding
@@ -44,17 +47,23 @@ class MovieDetails : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentMoviedetailsBinding.inflate(inflater, container, false)
-
         Toast.makeText(this.context, "$movieId", Toast.LENGTH_SHORT).show()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         /** INITIALISE VIEWMODEL */
+
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
 
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.sixunderground)
+
+        Palette.from(bitmap).generate(Palette.PaletteAsyncListener(){
+            if(it!= null){
+                binding.fragmentMovieDetailsCollapsingToolBar.setContentScrimColor(it.getMutedColor(R.attr.colorPrimary))
+            }
+        })
         mAuth = FirebaseAuth.getInstance()
         val toolbar: Toolbar = binding.toolbar
 

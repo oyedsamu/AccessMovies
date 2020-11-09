@@ -52,10 +52,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
             /** SHOW STATUS BAR */
             showStatusBar()
 
-//            val recyclerView = binding.recyclerView
-//            recyclerView.adapter = adapter
-//            recyclerView.layoutManager = LinearLayoutManager(activity)
-
             mAuth = FirebaseAuth.getInstance()
 
             binding.landingSignInTv.setOnClickListener {
@@ -66,7 +62,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
             binding.landingAddMovieImgBtn.setOnClickListener {
                 findNavController().navigate(R.id.addMovieFragment)
             }
-
 
             binding.landingSignOutTv.setOnClickListener {
                 signOutConfirm(it)

@@ -17,7 +17,6 @@ class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) :
         private lateinit var movie: Movie
 
         fun bind (movie : Movie, action: OnItemClick) {
-
             this.movie  = movie
             binding.apply {
                 Glide.with(itemView)
@@ -39,21 +38,9 @@ class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) :
         }
      }
 
-//    companion object {
-//        private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
-//            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-//                oldItem.id == newItem.id
-//
-//            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-//                oldItem.id == newItem.id
-//        }
-//    }
-
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = movies[position]
-        if (currentItem != null ) {
-            holder.bind(currentItem, listener)
-        }
+        holder.bind(currentItem, listener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {

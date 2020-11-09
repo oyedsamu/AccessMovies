@@ -1,7 +1,5 @@
 package com.decadevs.accessmovies.data
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 
 data class Movie (
