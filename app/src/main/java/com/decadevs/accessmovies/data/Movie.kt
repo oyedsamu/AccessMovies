@@ -15,6 +15,5 @@ data class Movie (
     val country : String,
     val genre : String,
     val image : String
-//    val comments: List<Comment> = arrayListOf()
 )
 

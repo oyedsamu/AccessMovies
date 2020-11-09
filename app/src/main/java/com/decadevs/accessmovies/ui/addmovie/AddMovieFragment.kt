@@ -3,15 +3,11 @@ package com.decadevs.accessmovies.ui.addmovie
 import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
-import android.content.ActivityNotFoundException
-import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,9 +16,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -33,10 +26,6 @@ import com.decadevs.accessmovies.validation.Validation
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.decadevs.accessmovies.viewmodel.MovieViewModel
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import java.util.*
 
 
@@ -46,8 +35,12 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val binding get() = _binding!!
     private lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
     private lateinit var date: String
-    private var mStorageRef: StorageReference? = null
+    private lateinit var mStorageRef: StorageReference
     private lateinit var movieViewModel: MovieViewModel
+    private lateinit var movieCountry: String
+    private lateinit var movieRating: String
+    private lateinit var movieImageUrl: String
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,11 +48,15 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentAddMovieBinding.inflate(inflater, container, false)
+        val countries = resources.getStringArray(R.array.country)
+        val ratings = resources.getStringArray(R.array.rating)
+
 
         /** set navigation arrow from drawable **/
         binding.fragmentAddMovieToolbar.toolbarFragment.setNavigationIcon(R.drawable.ic_arrow_back_)
 
-        /** Array adapter for spinner drop down for sex **/
+
+        /** Array adapter for spinner drop down for rating **/
         ArrayAdapter.createFromResource(
             requireContext(),
             R.array.rating,
@@ -67,11 +64,24 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
         ).also { ratingAdapter ->
             // Specify the layout to use when the list of choices appears
             ratingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
             binding.fragmentAddMovieCountryEt.adapter = ratingAdapter
+
+            binding.fragmentAddMovieCountryEt.onItemSelectedListener = object :
+                AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View, position: Int, id: Long
+                ) {
+                    movieRating = ratings[position]
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // write code to perform some action
+                }
+            }
         }
 
-        /** Array adapter for spinner drop down for sex **/
+        /** Array adapter for spinner drop down for country **/
         ArrayAdapter.createFromResource(
             requireContext(),
             R.array.country,
@@ -79,9 +89,24 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
         ).also { countryAdapter ->
             // Specify the layout to use when the list of choices appears
             countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
             binding.fragmentAddMovieRatingsEt.adapter = countryAdapter
+
+            binding.fragmentAddMovieRatingsEt.onItemSelectedListener = object :
+                AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View, position: Int, id: Long
+                ) {
+                    movieCountry = countries[position]
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // write code to perform some action
+                }
+            }
         }
+
+
 
         binding.fragmentAddMovieUpPhotoBtn.setOnClickListener {
             checkRunTimePermission()
@@ -98,11 +123,13 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
         /** INITIALISE VIEWMODEL */
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
 
+
         // Fields required to fill
         val editTextTitle = binding.fragmentAddMovieTitleEt
         val editTextReleaseDate = binding.fragmentAddMovieReleaseDateEt
         val editTextTicket = binding.fragmentAddMovieTicketPriceEt
         val editTextDescription = binding.fragmentAddMovieDescription
+
         mStorageRef = FirebaseStorage.getInstance().reference
 
 
@@ -112,18 +139,14 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         // Validate user input
         binding.fragmentAddMovieAddImageBtn.setOnClickListener {
-
-            val checkUserInput = Validation(
-                editTextTitle,
-                editTextReleaseDate, editTextTicket, editTextDescription
-            )
-        // Validate user input
-        binding.fragmentAddMovieAddImageBtn.setOnClickListener {
-
 //            /** ADD MOVIE TO DATABASE */
 //            addMovie()
-
-           val checkUserInput = Validation(editTextTitle, editTextReleaseDate, editTextTicket, editTextDescription )
+            val checkUserInput = Validation(
+                editTextTitle,
+                editTextReleaseDate,
+                editTextTicket,
+                editTextDescription
+            )
 
             val actionCb = binding.fragmentAddMovieGenreAction.isChecked
             val comedyCb = binding.fragmentAddMovieGenreComedy.isChecked
@@ -169,63 +192,59 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
 
 
-            if (checkUserInput != null) {
-                checkUserInput.error = "Field required"
+            when {
+                checkUserInput != null -> {
+                    checkUserInput.error = "Field required"
+                }
+                result.isEmpty() -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Click at least a genre",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+                else -> {
 
-            } else if (result.isEmpty()) {
-                Toast.makeText(requireContext(), "Click at least a genre", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-
-                findNavController().navigate(R.id.landingPage)
+                    uploadImage(movieImageUrl)
+                }
             }
 
-            result = result.substring(0, result.length - 1)
+//            val movieGenres = result.substring(0, result.length - 1)
+//            val movieTitle = editTextTitle.text.toString()
+//            val movieReleaseDate = editTextReleaseDate.text.toString()
+//            val movieTicket = editTextTicket.text.toString()
+//            val movieDescription = editTextDescription.text.toString()
+//
+//            val movie = Movie(
+//                "1",
+//                movieTitle,
+//                movieDescription,
+//                movieReleaseDate,
+//                movieRating,
+//                movieTicket,
+//                movieCountry,
+//                movieGenres,
+//            )
 
-//            val movie = Movie("1")
+            /** ADD MOVIE TO DATABASE */
 
 
         }
-                /** ADD MOVIE TO DATABASE */
-
-
-        val dateButton = binding.fragmentAddMovieReleaseDateEt
-
         /** Show the date button on click of date button **/
-        dateButton.setOnClickListener {
+        editTextReleaseDate.setOnClickListener {
             showDatePickerDialog(requireView())
         }
 
         /** Date set listener **/
-        dateSetListener = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
-            date = "${month + 1}/$day/$year"
-            dateButton.setText(date)
-        }
+        dateSetListener =
+            DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
+                date = "${month + 1}/$day/$year"
+                editTextReleaseDate.setText(date)
+            }
 
     }
-//        /** LISTEN FOR VALUE CHANGE */
-//        moviesDatabase.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                for (movieSnapshot in dataSnapshot.children) {
-//                    Log.d("movie", "$movieSnapshot")
-//                }
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Getting Post failed, log a message
-//                Log.w(ContentValues.TAG, "loadComment:onCancelled", databaseError.toException())
-//                // ...
-//            }
-//        })
-    }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        parent?.getItemAtPosition(position)
-    }
-
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-        TODO("Not yet implemented")
-    }
 
     /** Show Date picker Dialog Function **/
     @RequiresApi(Build.VERSION_CODES.M)
@@ -243,7 +262,6 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
             dateSetListener, year, month, day
         )
         dialog.show()
-
     }
 
     private fun checkRunTimePermission() {
@@ -261,11 +279,11 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 requestPermissions(permissions, PERMISSION_CODE);
             } else {
                 //permission already granted
-                pickImageFromGallery();
+                pickImageFromGallery()
             }
         } else {
             //system OS is < Marshmallow
-            pickImageFromGallery();
+            pickImageFromGallery()
         }
     }
 
@@ -322,18 +340,38 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
 
-    fun uploadImage(imageUri: Uri?){
-        if (imageUri != null){
-            var progress = ProgressDialog(context)
-            progress.setTitle("Uploading your movie...")
-            progress.show()
-//            var imageRef = mStorageRef?.child()
+    fun uploadImage(imageUri: Uri) {
+        var progress = ProgressDialog(context)
+        progress.setTitle("Uploading your movie...")
+        progress.show()
+        val imageRef = mStorageRef.child("imageFolder/${imageUri.lastPathSegment}")
+        val uploadTask = imageRef.putFile(imageUri)
+        uploadTask.addOnSuccessListener {
+            Toast.makeText(context, "Uploaded", Toast.LENGTH_LONG).show()
         }
+//        val urlTask = uploadTask.continueWithTask { task ->
+//            if (!task.isSuccessful) {
+//                task.exception?.let {
+//                    throw it
+//                }
+//            }
+//            imageRef.downloadUrl
+//        }.addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                movieImageUrl = task.result.toString()
+//            } else {
+//                Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+
+
     }
 
     private fun addMovie() {
-        val newMovie = Movie("4", "The End Of The World!", "Mooo Ha Ha Haaaaaaaa...",
-            "Nov 2020", "5", "1000", "La La Land", "Apocalypse", "slfkansdfjdsh")
+        val newMovie = Movie(
+            "4", "The End Of The World!", "Mooo Ha Ha Haaaaaaaa...",
+            "Nov 2020", "5", "1000", "La La Land", "Apocalypse", "slfkansdfjdsh"
+        )
         /** ADD NEW MOVIE TO DATABASE */
         movieViewModel.addNewMovie(newMovie)
 
@@ -346,7 +384,11 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 findNavController().navigate(R.id.landingPage)
             } else {
                 /** SHOW ERROR MESSAGE */
-                Toast.makeText(this.context, "Something went wrong. Movie could not be added.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this.context,
+                    "Something went wrong. Movie could not be added.",
+                    Toast.LENGTH_SHORT
+                ).show()
 //                Snackbar.make(this.context, "Something went wrong. Movie could not be added.", Snackbar.LENGTH_LONG).show()
             }
         })
