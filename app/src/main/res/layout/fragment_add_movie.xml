@@ -50,6 +50,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="24dp"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
         android:background="@drawable/add_movie_button_border"
         android:hint="@string/rating_str"
         android:paddingStart="8dp"
@@ -69,8 +70,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
         android:background="@drawable/add_movie_button_border"
         android:hint="@string/country_str"
+        android:spinnerMode="dropdown"
+        android:entries="@array/country"
         android:paddingTop="20dp"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
@@ -270,7 +274,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_add_movie_up_photo_btn" />
 
-
+    <ImageView
+        android:id="@+id/fragment_add_movie_user_movie"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fragment_add_movie_up_photo_btn"
+        app:layout_constraintStart_toEndOf="@+id/fragment_add_movie_up_photo_btn"
+        app:layout_constraintTop_toTopOf="@+id/fragment_add_movie_up_photo_btn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

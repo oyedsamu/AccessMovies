@@ -1,30 +1,44 @@
 package com.decadevs.accessmovies.ui.addmovie
 
+import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.databinding.FragmentAddMovieBinding
 import com.decadevs.accessmovies.validation.Validation
 import java.util.*
+import java.util.jar.Manifest
 
 
 class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
+
     private var _binding : FragmentAddMovieBinding? = null
+
 
     private val binding get() = _binding!!
 
     private lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
 
     private lateinit var date : String
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +53,8 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         /** set navigation arrow from drawable **/
         binding.fragmentAddMovieToolbar.toolbarFragment.setNavigationIcon(R.drawable.ic_arrow_back_)
+
+
 
 
 
@@ -67,12 +83,18 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             binding.fragmentAddMovieRatingsEt.adapter = countryAdapter
 
-
         }
+
+        binding.fragmentAddMovieUpPhotoBtn.setOnClickListener {
+            checkRunTimePermission()
+        }
+
 
         return binding.root
 
     }
+
+
 
 
 
@@ -85,6 +107,14 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val editTextReleaseDate = binding.fragmentAddMovieReleaseDateEt
         val editTextTicket = binding.fragmentAddMovieTicketPriceEt
         val editTextDescription = binding.fragmentAddMovieDescription
+
+
+        binding.fragmentAddMovieToolbar.toolbarFragment.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+
+
 
 
 
@@ -203,6 +233,75 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
         )
         dialog.show()
 
+    }
+
+    private fun checkRunTimePermission () {
+        //check runtime permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_DENIED){
+                //permission denied
+                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+                //show popup to request runtime permission
+                requestPermissions(permissions, PERMISSION_CODE);
+            }
+            else{
+                //permission already granted
+                pickImageFromGallery();
+            }
+        }
+        else{
+            //system OS is < Marshmallow
+            pickImageFromGallery();
+        }
+    }
+
+
+
+    private fun pickImageFromGallery() {
+        //Intent to pick image
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
+    companion object {
+        //image pick code
+        private val IMAGE_PICK_CODE = 1000;
+        //Permission code
+        private val PERMISSION_CODE = 1001;
+    }
+
+    //handle requested permission result
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when(requestCode){
+            PERMISSION_CODE -> {
+                if (grantResults.size >0 && grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED){
+                    //permission from popup granted
+                    pickImageFromGallery()
+                }
+                else{
+                    //permission from popup denied
+                    Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+
+    //handle result of picked image
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+
+            val imageUri = data?.data
+
+            val myImage = binding.fragmentAddMovieUserMovie
+
+            myImage.setImageURI(imageUri)
+
+
+        }
     }
 
 
