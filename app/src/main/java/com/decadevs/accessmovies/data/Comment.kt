@@ -1,8 +1,11 @@
 package com.decadevs.accessmovies.data
 
+import com.google.firebase.database.Exclude
+
 data class Comment (
-    val id: String,
-    val name: String,
-    val comment: String,
-    val movieId: String
+    @get:Exclude
+    var id: String,
+    var movieId: String,
+    val user: String,
+    val comment: String
 )

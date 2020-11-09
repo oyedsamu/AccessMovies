@@ -4,17 +4,18 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 
-data class Movie (
+@Entity(tableName = "movies_table")
+data class MovieR (
+    @PrimaryKey(autoGenerate = true)
     @get:Exclude
-    var id : String,
-    val title : String,
-    val movieDescription : String,
+    var id : Int,
+    val name : String,
+    val description : String,
     val releaseDate  : String,
     val rating : String,
     val ticketPrice : String,
     val country : String,
     val genre : String,
-    val image : String
-//    val comments: List<Comment> = arrayListOf()
-)
+    val photo : Int
 
+)

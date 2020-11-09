@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/movieDetails"
-        android:name="com.decadevs.accessmovies.ui.MovieDetails"
+        android:name="com.decadevs.accessmovies.ui.moviedetails.MovieDetails"
         android:label="fragment_moviedetails"
         tools:layout="@layout/fragment_moviedetails" />
     <fragment

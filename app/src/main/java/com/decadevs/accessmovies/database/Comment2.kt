@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_comment")
-data class Comment (
+data class Comment2 (
         @PrimaryKey(autoGenerate = true)
         var movieId : Long = 0L,
         @ColumnInfo(name = "start_time_milli")

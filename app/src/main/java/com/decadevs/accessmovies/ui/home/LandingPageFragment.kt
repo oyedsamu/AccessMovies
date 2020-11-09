@@ -1,5 +1,6 @@
 package com.decadevs.accessmovies.ui.home
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,8 +19,12 @@ import com.decadevs.accessmovies.adapters.OnItemClick
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentLandingPageBinding
 import com.decadevs.accessmovies.utils.Constants
+import com.decadevs.accessmovies.utils.showStatusBar
 import com.google.firebase.auth.FirebaseAuth
-
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 /**
@@ -32,22 +37,22 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
 //    private val viewModel by viewModels<LandingPageViewModel> ()
 
     private val adapter = MovieAdapter(mutableListOf(), this)
+    var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies");
+    private lateinit var mAuth: FirebaseAuth
 
     private var _binding: FragmentLandingPageBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var mAuth: FirebaseAuth
-
-//    class LandingPageFragment : Fragment(R.layout.fragment_landing_page),
-//    private val viewModel by viewModels<LandingPageViewModel> ()
-
-//        private var _binding: FragmentLandingPageBinding? = null
-
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
             _binding = FragmentLandingPageBinding.bind(view)
+
+            /** REAL TIME UPDATE OF MOVIES */
+            moviesListener()
+
+            /** SHOW STATUS BAR */
+            showStatusBar()
 
             val recyclerView = binding.recyclerView
             recyclerView.adapter = adapter
@@ -59,11 +64,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                 findNavController().navigate(R.id.loginFragment)
             }
 
-
-//        binding.testing.setOnClickListener {
-//            findNavController().navigate(R.id.addMovieFragment)
-//        }
-
             binding.landingAddMovieImgBtn.setOnClickListener {
                 findNavController().navigate(R.id.addMovieFragment)
             }
@@ -73,9 +73,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                 signOutConfirm(it)
             }
 
-//        binding.testing.setOnClickListener {
-//            findNavController().navigate(R.id.addMovieFragment)
-//        }
         }
 
         override fun onStart() {
@@ -90,40 +87,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                 binding.landingAddMovieImgBtn.visibility = View.VISIBLE
             }
         }
-
-
-        override fun onResume() {
-            super.onResume()
-            activity?.let {
-                val gotten = getMovies(10)
-
-                gotten.let {
-                    adapter.update(it)
-                }
-            }
-
-        }
-
-
-        fun getMovies(num: Int): MutableList<Movie> {
-            val lists = mutableListOf<Movie>()
-            for (i in 0..num) {
-                val movie = Movie(
-                    id = "aa",
-                    name = "From Russia With Love",
-                    description = "What love does",
-                    releaseDate = "2020",
-                    rating = "4",
-                    ticketPrice = "$88",
-                    country = "California",
-                    genre = "Action",
-                    photo = R.drawable.sixunderground
-                )
-                lists.add(movie)
-            }
-            return lists
-        }
-
 
         fun signOutConfirm(view: View) {
             val builder = AlertDialog.Builder(view.context)
@@ -152,8 +115,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
 
         }
 
-
-
     override fun onItemClick(item: Movie, position: Int) {
         Log.d("CHECKING", "clicked")
         val CONSTANT_MOVIES_ID = "MoviesId"
@@ -161,5 +122,34 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
         findNavController().navigate(R.id.movieDetails)
     }
 
+    /** LISTEN FOR MOVIES CHANGE */
+    private fun moviesListener() {
+        moviesDatabase.addValueEventListener(object : ValueEventListener {
+            var allMovies = arrayListOf<Movie>()
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    val id = snapshot.key.toString()
+                    val name = snapshot.child("name").value.toString()
+                    val description = snapshot.child("description").value.toString()
+                    val releaseDate = snapshot.child("releaseDate").value.toString()
+                    val rating = snapshot.child("rating").value.toString()
+                    val ticketPrice = snapshot.child("ticketPrice").value.toString()
+                    val country = snapshot.child("country").value.toString()
+                    val genre = snapshot.child("genre").value.toString()
+                    val photo = snapshot.child("photo").value.toString()
 
+                    allMovies.add(Movie(id, name, description, releaseDate, rating, ticketPrice, country, genre, photo))
+                }
+                Log.d("allMovies", "$allMovies")
+                /** UPDATE MOVIES RECYCLER VIEW */
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(ContentValues.TAG, "loadComment:onCancelled", databaseError.toException())
+                // ...
+            }
+        })
+    }
 }

@@ -16,10 +16,7 @@ import com.decadevs.accessmovies.data.Comment
 import com.decadevs.accessmovies.data.User
 import com.decadevs.accessmovies.databinding.FragmentLoginBinding
 import com.decadevs.accessmovies.databinding.FragmentOnboardingBinding
-import com.decadevs.accessmovies.utils.Constants
-import com.decadevs.accessmovies.utils.Validator
-import com.decadevs.accessmovies.utils.hideKeyboard
-import com.decadevs.accessmovies.utils.hideStatusBar
+import com.decadevs.accessmovies.utils.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -56,7 +53,7 @@ class LoginFragment : Fragment() {
         users = mutableListOf()
 
 
-        binding.logInSignupBtn.setOnClickListener {
+        binding.loginSignUpTv.setOnClickListener {
             /** MOVE TO REGISTER SCREEN */
             Toast.makeText(
                 this.context,
@@ -107,6 +104,16 @@ class LoginFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "createUserWithEmail:success")
+                    val user = firebaseAuth.currentUser
+                    val name = GetNameFromEmail().getNameFrom(user?.email.toString())
+
+                    Constants.name = name
+                    Snackbar.make(
+                        requireView(),
+                        "$name logged in successfully",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                     Constants.fragment?.let { findNavController().navigate(it) }
                 } else {
                     // If sign in fails, display a message to the user.

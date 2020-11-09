@@ -14,10 +14,7 @@ class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) :
 
 
      class MovieViewHolder (private val binding: ItemMoviesBinding) :  RecyclerView.ViewHolder(binding.root) {
-
-         private lateinit var movie: Movie
-
-
+        private lateinit var movie: Movie
 
         fun bind (movie : Movie, action: OnItemClick) {
 
@@ -30,7 +27,7 @@ class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) :
                     .error(R.drawable.ic_error)
                     .into(itemMovieImage)
 
-                itemMovieTitle.text = movie.name
+                itemMovieTitle.text = movie.title
                 itemMovieGenre.text = movie.genre
                 itemMovieRating.text = movie.rating
                 itemPriceTicket.text = movie.ticketPrice
