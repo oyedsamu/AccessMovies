@@ -1,6 +1,8 @@
 package com.decadevs.accessmovies.ui.moviedetails
 
 import android.content.ContentValues
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +15,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.palette.graphics.Palette
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.decadevs.accessmovies.R
+import com.decadevs.accessmovies.adapters.CommentRecycler
 import com.decadevs.accessmovies.data.Comment
 import com.decadevs.accessmovies.databinding.FragmentMoviedetailsBinding
 import com.decadevs.accessmovies.utils.Constants
@@ -27,15 +33,16 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class MovieDetails : Fragment() {
-
+    /** A  */
     private lateinit var mAuth: FirebaseAuth
     private var _binding: FragmentMoviedetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var movieViewModel: MovieViewModel
-    var commentsDatabase = FirebaseDatabase.getInstance().getReference("Comments");
+    var commentsDatabase = FirebaseDatabase.getInstance().getReference("Comments")
+    lateinit var commentRecycler: RecyclerView
+    lateinit var mAdapter: CommentRecycler
 
-//    val bundle = arguments
-//    val movieId = bundle?.getString("MoviesId")!!
+
     val movieId = Constants.movieId
 
     override fun onCreateView(
@@ -44,17 +51,33 @@ class MovieDetails : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentMoviedetailsBinding.inflate(inflater, container, false)
-
         Toast.makeText(this.context, "$movieId", Toast.LENGTH_SHORT).show()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         /** INITIALISE VIEWMODEL */
+
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
 
+        commentRecycler = binding.movieDetailsCommentRecyclerList
+        commentRecycler.setHasFixedSize(true)
+        commentRecycler.layoutManager = LinearLayoutManager(requireContext())
+
+
+        /** Set the Color of the bar to be inferred from the main image */
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.sixunderground)
+
+        Palette.from(bitmap).generate(Palette.PaletteAsyncListener() {
+            if (it != null) {
+                binding.fragmentMovieDetailsCollapsingToolBar.setContentScrimColor(
+                    it.getMutedColor(
+                        R.attr.colorPrimary
+                    )
+                )
+            }
+        })
         mAuth = FirebaseAuth.getInstance()
         val toolbar: Toolbar = binding.toolbar
 
@@ -68,17 +91,15 @@ class MovieDetails : Fragment() {
         commentsListener()
     }
 
+    /** Checks if the user is logged in */
     override fun onStart() {
         super.onStart()
         val name: String
         val currentUser = mAuth.currentUser
 
-            if (currentUser != null) {
+        if (currentUser != null) {
             name = GetNameFromEmail().getNameFrom(currentUser.email.toString())
             Constants.name = name
-//            binding.landingSignInTv.visibility = View.INVISIBLE
-//            binding.landingSignOutTv.visibility = View.VISIBLE
-//            binding.landingAddMovieImgBtn.visibility = View.VISIBLE
             binding.movieCommentSubmitButton.isEnabled = true
 
             // Implement Onclick listener for the button here
@@ -101,24 +122,30 @@ class MovieDetails : Fragment() {
     }
 
 
-
+    /** Prevents memory leaks by setting the binding to null at the end of lifecycle */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    /** Function for Comments to be added */
     fun addComment(name: String, comment: String, movieId: String) {
         /** ADD NEW COMMENT TO DATABASE */
         val comment = Comment("1", movieId, name, comment)
         movieViewModel.addNewComment(comment)
 
         /** OBSERVE RESPONSE */
-        movieViewModel.newMovieResult?.observe(viewLifecycleOwner, Observer{
+        movieViewModel.newMovieResult?.observe(viewLifecycleOwner, Observer {
             if (it == null) {
-                Snackbar.make(requireView(), "Contact Succssfully added", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), "Contact Succssfully added", Snackbar.LENGTH_LONG)
+                    .show()
 //                Toast.makeText(this.context, "Comment Successfully added!", Toast.LENGTH_SHORT).show()
             } else {
-                Snackbar.make(requireView(), "Something went wrong. Comment could not be added.", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(
+                    requireView(),
+                    "Something went wrong. Comment could not be added.",
+                    Snackbar.LENGTH_LONG
+                ).show()
 //                Toast.makeText(this.context, "Something went wrong. Comment could not be added.", Toast.LENGTH_SHORT).show()
             }
         })
@@ -128,6 +155,7 @@ class MovieDetails : Fragment() {
         /** CALL VIEWMODEL TO GET COMMENTS */
         movieViewModel.getAllComments()
     }
+
     fun getMovie() {
         /** CALL VIEWMODEL TO GET MOVIE DETAILS */
     }
@@ -146,13 +174,17 @@ class MovieDetails : Fragment() {
                 Log.d("allData", "$allComments")
                 val movieComments = arrayListOf<Comment>()
                 /** GET COMMENTS FOR CURRENT MOVIE */
-                for(comment in allComments) {
-                    if(comment.movieId == movieId) {
+                for (comment in allComments) {
+                    if (comment.movieId == movieId) {
                         movieComments.add(comment)
                     }
                 }
                 /** UPDATE COMMENTS RECYCLER VIEW */
                 movieComments.reverse()
+                mAdapter = CommentRecycler(this@MovieDetails.requireContext(), movieComments)
+                mAdapter.notifyDataSetChanged()
+                commentRecycler.adapter = mAdapter
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

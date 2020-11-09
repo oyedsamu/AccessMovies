@@ -1,9 +1,8 @@
 package com.decadevs.accessmovies.data
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 
+/** The data class for the Movie */
 data class Movie (
     @get:Exclude
     var id : String,

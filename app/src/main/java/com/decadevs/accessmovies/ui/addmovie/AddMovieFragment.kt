@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,10 @@ import java.util.*
 
 class AddMovieFragment : Fragment() {
 
+
+    /**
+     * All needed
+     */
     private var _binding: FragmentAddMovieBinding? = null
     private val binding get() = _binding!!
     private lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
@@ -41,6 +46,7 @@ class AddMovieFragment : Fragment() {
     private lateinit var movieCountry: String
     private lateinit var movieRating: String
     private lateinit var movieImageUrl: String
+    private lateinit var imageUri: Uri
 
 
     override fun onCreateView(
@@ -51,6 +57,7 @@ class AddMovieFragment : Fragment() {
         _binding = FragmentAddMovieBinding.inflate(inflater, container, false)
         val countries = resources.getStringArray(R.array.country)
         val ratings = resources.getStringArray(R.array.rating)
+        movieImageUrl = ""
 
 
         /** set navigation arrow from drawable **/
@@ -134,11 +141,12 @@ class AddMovieFragment : Fragment() {
         mStorageRef = FirebaseStorage.getInstance().reference
 
 
+        /** User should be able to go back to previous screen */
         binding.fragmentAddMovieToolbar.toolbarFragment.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        // Validate user input
+        /** Validate user inputs using the editable fields */
         binding.fragmentAddMovieAddImageBtn.setOnClickListener {
             val checkUserInput = Validation(
                 editTextTitle,
@@ -190,7 +198,6 @@ class AddMovieFragment : Fragment() {
                 result += "Thriller|"
             }
 
-
             when {
                 checkUserInput != null -> {
                     checkUserInput.error = "Field required"
@@ -204,12 +211,12 @@ class AddMovieFragment : Fragment() {
                         .show()
                 }
                 else -> {
-
-//                    uploadImage(movieImageUrl)
+                    checkRunTimePermission()
+//                    uploadImage(imageUri)
                 }
             }
 
-            val movieGenres = result.substring(0, result.length - 1)
+            val movieGenres = if(result.isNotEmpty())result.substring(0, result.length - 1) else result
             val movieTitle = editTextTitle.text.toString()
             val movieReleaseDate = editTextReleaseDate.text.toString()
             val movieTicket = editTextTicket.text.toString()
@@ -224,7 +231,7 @@ class AddMovieFragment : Fragment() {
                 movieTicket,
                 movieCountry,
                 movieGenres,
-                "imageURL"
+                movieImageUrl
             )
 
             /** ADD MOVIE TO DATABASE */
@@ -301,7 +308,7 @@ class AddMovieFragment : Fragment() {
         private val PERMISSION_CODE = 1001;
     }
 
-    //handle requested permission result
+    /** Handle requested permission result */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -312,7 +319,7 @@ class AddMovieFragment : Fragment() {
                 if (grantResults.size > 0 && grantResults[0] ==
                     PackageManager.PERMISSION_GRANTED
                 ) {
-                    //permission from popup granted
+                    /** Handle Image Request gracefully */
                     pickImageFromGallery()
                 } else {
                     //permission from popup denied
@@ -323,51 +330,46 @@ class AddMovieFragment : Fragment() {
     }
 
 
-    //handle result of picked image
+    /**handle result of picked image */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-
-            val imageUri = data?.data
-
+            imageUri = data?.data!!
             val myImage = binding.fragmentAddMovieUserMovie
 
+            val progress = ProgressDialog(context)
+            progress.setTitle("Uploading your movie details...")
+            progress.show()
+            val imageRef = mStorageRef.child("imageFolder/${imageUri.lastPathSegment}")
+            val uploadTask = imageRef.putFile(imageUri)
+            uploadTask.addOnSuccessListener {
+                progress.dismiss()
+                Toast.makeText(this.context, "Uploaded", Toast.LENGTH_LONG).show()
+                imageRef.downloadUrl.addOnSuccessListener {
+                    movieImageUrl = it.toString()
+                }
+            }
             myImage.setImageURI(imageUri)
         }
     }
 
 
-    fun uploadImage(imageUri: Uri) {
-        var progress = ProgressDialog(context)
-        progress.setTitle("Uploading your movie...")
-        progress.show()
-        val imageRef = mStorageRef.child("imageFolder/${imageUri.lastPathSegment}")
-        val uploadTask = imageRef.putFile(imageUri)
-        uploadTask.addOnSuccessListener {
-            Toast.makeText(context, "Uploaded", Toast.LENGTH_LONG).show()
-        }
-//        val urlTask = uploadTask.continueWithTask { task ->
-//            if (!task.isSuccessful) {
-//                task.exception?.let {
-//                    throw it
-//                }
-//            }
-//            imageRef.downloadUrl
-//        }.addOnCompleteListener { task ->
-//            if (task.isSuccessful) {
-//                movieImageUrl = task.result.toString()
-//            } else {
-//                Toast.makeText(context, "An error occurred", Toast.LENGTH_SHORT).show()
+    /** handle result of picked image */
+//    private fun uploadImage(imageUri: Uri) {
+//        var progress = ProgressDialog(context)
+//        progress.setTitle("Uploading your movie details...")
+//        progress.show()
+//        val imageRef = mStorageRef.child("imageFolder/${imageUri.lastPathSegment}")
+//        val uploadTask = imageRef.putFile(imageUri)
+//        uploadTask.addOnSuccessListener {
+//            progress.dismiss()
+//            Toast.makeText(this.context, "Uploaded", Toast.LENGTH_LONG).show()
+//            imageRef.downloadUrl.addOnSuccessListener {
+//                movieImageUrl = it.toString()
 //            }
 //        }
-
-
-    }
+//    }
 
     private fun addMovie(movie: Movie) {
-//        val newMovie = Movie(
-//            "4", "The End Of The World!", "Mooo Ha Ha Haaaaaaaa...",
-//            "Nov 2020", "5", "1000", "La La Land", "Apocalypse", "slfkansdfjdsh"
-//        )
         /** ADD NEW MOVIE TO DATABASE */
         movieViewModel.addNewMovie(movie)
         Snackbar.make(requireView(), "Movie Successfully Added", Snackbar.LENGTH_LONG).show()
@@ -377,7 +379,6 @@ class AddMovieFragment : Fragment() {
             if (it == null) {
                 /** NAVIGATE TO LANDING PAGE */
                 Toast.makeText(this.context, "Movie Successfully added!", Toast.LENGTH_SHORT).show()
-//                Snackbar.make(this.context, "Movie Successfully added!", Snackbar.LENGTH_LONG).show()
                 findNavController().navigate(R.id.landingPage)
             } else {
                 /** SHOW ERROR MESSAGE */
@@ -386,7 +387,6 @@ class AddMovieFragment : Fragment() {
                     "Something went wrong. Movie could not be added.",
                     Toast.LENGTH_SHORT
                 ).show()
-//                Snackbar.make(this.context, "Something went wrong. Movie could not be added.", Snackbar.LENGTH_LONG).show()
             }
         })
     }

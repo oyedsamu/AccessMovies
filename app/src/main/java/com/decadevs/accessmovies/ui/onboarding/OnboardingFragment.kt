@@ -12,7 +12,7 @@ import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.databinding.FragmentOnboardingBinding
 import com.decadevs.accessmovies.utils.hideStatusBar
 import com.google.android.material.tabs.TabLayoutMediator
-import com.trapezoidlimited.groundforce.adapters.OnBoardingViewPagerAdapter
+import com.decadevs.accessmovies.adapters.OnBoardingViewPagerAdapter
 
 class OnboardingFragment : Fragment() {
 
