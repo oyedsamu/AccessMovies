@@ -27,6 +27,7 @@ import com.decadevs.accessmovies.validation.Validation
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.decadevs.accessmovies.viewmodel.MovieViewModel
+import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 
@@ -141,8 +142,6 @@ class AddMovieFragment : Fragment() {
 
         // Validate user input
         binding.fragmentAddMovieAddImageBtn.setOnClickListener {
-//            /** ADD MOVIE TO DATABASE */
-//            addMovie()
             val checkUserInput = Validation(
                 editTextTitle,
                 editTextReleaseDate,
@@ -232,6 +231,7 @@ class AddMovieFragment : Fragment() {
 
             /** ADD MOVIE TO DATABASE */
             addMovie(movie)
+            findNavController().popBackStack()
         }
         /** Show the date button on click of date button **/
         editTextReleaseDate.setOnClickListener {
@@ -244,9 +244,7 @@ class AddMovieFragment : Fragment() {
                 date = "${month + 1}/$day/$year"
                 editTextReleaseDate.setText(date)
             }
-
     }
-
 
     /** Show Date picker Dialog Function **/
     @RequiresApi(Build.VERSION_CODES.M)
@@ -375,6 +373,7 @@ class AddMovieFragment : Fragment() {
 //        )
         /** ADD NEW MOVIE TO DATABASE */
         movieViewModel.addNewMovie(movie)
+        Snackbar.make(requireView(), "Movie Successfully Added", Snackbar.LENGTH_LONG).show()
 
         /** OBSERVE RESPONSE */
         movieViewModel.newMovieResult?.observe({ lifecycle }, {

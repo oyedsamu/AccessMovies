@@ -37,12 +37,7 @@ class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) :
               action.onItemClick(movie, adapterPosition)
             }
         }
-
-
      }
-
-
-
 
 //    companion object {
 //        private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
@@ -59,9 +54,6 @@ class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) :
         if (currentItem != null ) {
             holder.bind(currentItem, listener)
         }
-
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -73,8 +65,7 @@ class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) :
 
     override fun getItemCount() = movies.size
 
-
-    fun update(list: List<Movie>){
+    fun update(list: List<Movie>) {
         this.movies.clear()
         this.movies.addAll(list)
         notifyDataSetChanged()
