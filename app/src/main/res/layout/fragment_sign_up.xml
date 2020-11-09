@@ -79,10 +79,10 @@
         app:layout_constraintEnd_toEndOf="@+id/signUp_formBackground_vw" />
 
     <EditText
-        android:id="@+id/signUp_username_et"
+        android:id="@+id/signUp_name_et"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:hint="Your Username"
+        android:hint="Your Name"
         android:background="@color/transparent"
         android:layout_marginStart="8dp"
         android:paddingStart="10dp"

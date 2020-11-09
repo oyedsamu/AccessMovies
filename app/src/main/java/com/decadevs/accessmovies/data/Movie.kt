@@ -10,6 +10,14 @@ data class Movie (
     val ticketPrice : String,
     val country : String,
     val genre : String,
-    val photo : Int
-
+    val photo : Int,
+//    val comments: List<Comment> = arrayListOf()
 )
+
+data class Comment (
+    val id: String,
+    val name: String,
+    val comment: String,
+    val movieId: String
+)
+

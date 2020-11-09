@@ -1,9 +1,12 @@
 package com.decadevs.accessmovies
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.decadevs.accessmovies.databinding.FragmentAddMovieBinding
@@ -13,16 +16,25 @@ import com.decadevs.accessmovies.validation.Validation
 class AddMovieFragment : Fragment() {
 
     private var _binding : FragmentAddMovieBinding? = null
-
     private val binding get() = _binding!!
+
+
+
+    private val btnChoose: Button? = null
+    private  var btnUpload:Button? = null
+    private val imageView: ImageView? = null
+    private val filePath: Uri? = null
+    private val PICK_IMAGE_REQUEST = 71
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentAddMovieBinding.inflate(inflater, container, false)
 
@@ -52,8 +64,10 @@ class AddMovieFragment : Fragment() {
         // Validate user input
         binding.fragmentAddMovieAddImageBtn.setOnClickListener {
 
-           val checkUserInput = Validation(editTextTitle, editTextGenre, editTextRating, editTextCountry,
-                   editTextReleaseDate, editTextTicket, editTextDescription )
+           val checkUserInput = Validation(
+               editTextTitle, editTextGenre, editTextRating, editTextCountry,
+               editTextReleaseDate, editTextTicket, editTextDescription
+           )
 
             if (checkUserInput != null)  {
                 checkUserInput.error = "Field required"
