@@ -3,7 +3,7 @@
 
 ## Project Overview
 A Movie App where the user can view different movies and their respective information which include **the name of the movie,** **movie description,** 
-**movie rating,** **movie rlease date and ticket price** among others. User can also add movies and comment on a specific movie after successful register
+**movie rating,** **movie release date and ticket price** among others. User can also add movies and comment on a specific movie after successful register
 and login.
 
 ## Project Setup
@@ -31,10 +31,17 @@ and login.
 * Firebase - Database
 * Android Studio - IDE
 
+## Architecture 
+* MVVM
+
+
 ## Contributors
 * Oyedele Samuel 
 * Timring Timkwali
 * Daniel Ayodeji
+
+## For more Description
+* check out this video [link](https://drive.google.com/file/d/1CvQhr-zppmArmE3PFryUAbYNRwcmbndC/view) 
 
 
 
