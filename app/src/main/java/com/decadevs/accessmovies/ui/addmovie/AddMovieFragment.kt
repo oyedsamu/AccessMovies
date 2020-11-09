@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +30,7 @@ import com.decadevs.accessmovies.viewmodel.MovieViewModel
 import java.util.*
 
 
-class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class AddMovieFragment : Fragment() {
 
     private var _binding: FragmentAddMovieBinding? = null
     private val binding get() = _binding!!
@@ -40,6 +41,7 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var movieCountry: String
     private lateinit var movieRating: String
     private lateinit var movieImageUrl: String
+    private lateinit var imageUri: Uri
 
 
     override fun onCreateView(
@@ -205,31 +207,31 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         .show()
                 }
                 else -> {
-
-                    uploadImage(movieImageUrl)
+                    checkRunTimePermission()
+                    uploadImage(imageUri)
                 }
             }
 
-//            val movieGenres = result.substring(0, result.length - 1)
-//            val movieTitle = editTextTitle.text.toString()
-//            val movieReleaseDate = editTextReleaseDate.text.toString()
-//            val movieTicket = editTextTicket.text.toString()
-//            val movieDescription = editTextDescription.text.toString()
-//
-//            val movie = Movie(
-//                "1",
-//                movieTitle,
-//                movieDescription,
-//                movieReleaseDate,
-//                movieRating,
-//                movieTicket,
-//                movieCountry,
-//                movieGenres,
-//            )
+            val movieGenres = result.substring(0, result.length - 1)
+            val movieTitle = editTextTitle.text.toString()
+            val movieReleaseDate = editTextReleaseDate.text.toString()
+            val movieTicket = editTextTicket.text.toString()
+            val movieDescription = editTextDescription.text.toString()
+
+            val movie = Movie(
+                "1",
+                movieTitle,
+                movieDescription,
+                movieReleaseDate,
+                movieRating,
+                movieTicket,
+                movieCountry,
+                movieGenres,
+                movieImageUrl
+            )
 
             /** ADD MOVIE TO DATABASE */
-
-
+            addMovie(movie)
         }
         /** Show the date button on click of date button **/
         editTextReleaseDate.setOnClickListener {
@@ -328,26 +330,25 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
     //handle result of picked image
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-
-            val imageUri = data?.data
-
+            imageUri = data?.data!!
             val myImage = binding.fragmentAddMovieUserMovie
-
             myImage.setImageURI(imageUri)
-
-
         }
     }
 
 
     fun uploadImage(imageUri: Uri) {
         var progress = ProgressDialog(context)
-        progress.setTitle("Uploading your movie...")
+        progress.setTitle("Uploading your movie details...")
         progress.show()
         val imageRef = mStorageRef.child("imageFolder/${imageUri.lastPathSegment}")
         val uploadTask = imageRef.putFile(imageUri)
         uploadTask.addOnSuccessListener {
+            progress.dismiss()
             Toast.makeText(context, "Uploaded", Toast.LENGTH_LONG).show()
+            imageRef.downloadUrl.addOnSuccessListener {
+                movieImageUrl = it.toString()
+            }
         }
 //        val urlTask = uploadTask.continueWithTask { task ->
 //            if (!task.isSuccessful) {
@@ -367,13 +368,13 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     }
 
-    private fun addMovie() {
-        val newMovie = Movie(
-            "4", "The End Of The World!", "Mooo Ha Ha Haaaaaaaa...",
-            "Nov 2020", "5", "1000", "La La Land", "Apocalypse", "slfkansdfjdsh"
-        )
+    private fun addMovie(movie: Movie) {
+//        val newMovie = Movie(
+//            "4", "The End Of The World!", "Mooo Ha Ha Haaaaaaaa...",
+//            "Nov 2020", "5", "1000", "La La Land", "Apocalypse", "slfkansdfjdsh"
+//        )
         /** ADD NEW MOVIE TO DATABASE */
-        movieViewModel.addNewMovie(newMovie)
+        movieViewModel.addNewMovie(movie)
 
         /** OBSERVE RESPONSE */
         movieViewModel.newMovieResult?.observe({ lifecycle }, {
