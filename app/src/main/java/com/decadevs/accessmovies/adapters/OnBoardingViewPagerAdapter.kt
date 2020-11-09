@@ -1,4 +1,4 @@
-package com.trapezoidlimited.groundforce.adapters
+package com.decadevs.accessmovies.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

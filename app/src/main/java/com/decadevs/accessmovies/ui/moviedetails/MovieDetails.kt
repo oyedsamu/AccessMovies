@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.Comment
+import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentMoviedetailsBinding
 import com.decadevs.accessmovies.utils.Constants
 import com.decadevs.accessmovies.utils.GetNameFromEmail
@@ -33,6 +34,7 @@ class MovieDetails : Fragment() {
     private val binding get() = _binding!!
     private lateinit var movieViewModel: MovieViewModel
     var commentsDatabase = FirebaseDatabase.getInstance().getReference("Comments");
+    var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies");
 
 //    val bundle = arguments
 //    val movieId = bundle?.getString("MoviesId")!!
@@ -45,7 +47,7 @@ class MovieDetails : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentMoviedetailsBinding.inflate(inflater, container, false)
 
-        Toast.makeText(this.context, "$movieId", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this.context, "$movieId", Toast.LENGTH_SHORT).show()
 
         return binding.root
     }
@@ -66,6 +68,8 @@ class MovieDetails : Fragment() {
 
         /** REAL TIME UPDATE OF COMMENTS */
         commentsListener()
+        /** FILL DETAILS SCREEN */
+        moviesListener()
     }
 
     override fun onStart() {
@@ -161,5 +165,50 @@ class MovieDetails : Fragment() {
                 // ...
             }
         })
+    }
+
+    /** LISTEN FOR MOVIE CHANGE */
+    private fun moviesListener() {
+        moviesDatabase.addValueEventListener(object : ValueEventListener {
+            var allMovies = arrayListOf<Movie>()
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    val title = snapshot.child("title").value.toString()
+                    val movieDescription = snapshot.child("movieDescription").value.toString()
+                    val releaseDate = snapshot.child("releaseDate").value.toString()
+                    val rating = snapshot.child("rating").value.toString()
+                    val ticketPrice = snapshot.child("ticketPrice").value.toString()
+                    val country = snapshot.child("country").value.toString()
+                    val genre = snapshot.child("genre").value.toString()
+                    val image = snapshot.child("image").value.toString()
+
+                    allMovies.add(Movie("1", title, movieDescription, releaseDate, rating, ticketPrice, country, genre, image))
+                }
+                Log.d("allMovies", "$allMovies")
+                val movieComments = arrayListOf<Comment>()
+                /** GET DETAILS FOR CURRENT MOVIE */
+                for(movie in allMovies) {
+                    if(movie.id == movieId) {
+                        setMovieDetails(movie)
+                    }
+                }
+                /** UPDATE COMMENTS RECYCLER VIEW */
+                movieComments.reverse()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(ContentValues.TAG, "loadComment:onCancelled", databaseError.toException())
+                // ...
+            }
+        })
+    }
+
+    fun setMovieDetails(movie: Movie) {
+        binding.movieRatings.text = movie.rating
+        binding.movieCountry.text = movie.country
+        binding.movieReleaseDate.text = movie.releaseDate
+        binding.movieGenres.text = movie.genre
+        binding.movieDescription.text = movie.movieDescription
     }
 }

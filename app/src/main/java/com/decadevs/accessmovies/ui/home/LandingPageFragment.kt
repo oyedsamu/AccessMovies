@@ -129,7 +129,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     val id = snapshot.key.toString()
-                    val name = snapshot.child("name").value.toString()
+                    val name = snapshot.child("title").value.toString()
                     val description = snapshot.child("description").value.toString()
                     val releaseDate = snapshot.child("releaseDate").value.toString()
                     val rating = snapshot.child("rating").value.toString()

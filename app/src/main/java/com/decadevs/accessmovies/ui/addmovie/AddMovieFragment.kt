@@ -22,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentAddMovieBinding
+import com.decadevs.accessmovies.utils.showStatusBar
 import com.decadevs.accessmovies.validation.Validation
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -52,7 +53,7 @@ class AddMovieFragment : Fragment() {
         val countries = resources.getStringArray(R.array.country)
         val ratings = resources.getStringArray(R.array.rating)
 
-
+        showStatusBar()
         /** set navigation arrow from drawable **/
         binding.fragmentAddMovieToolbar.toolbarFragment.setNavigationIcon(R.drawable.ic_arrow_back_)
 
@@ -191,9 +192,10 @@ class AddMovieFragment : Fragment() {
             }
 
 
-            when {
+            when  {
                 checkUserInput != null -> {
                     checkUserInput.error = "Field required"
+
                 }
                 result.isEmpty() -> {
                     Toast.makeText(
@@ -205,11 +207,12 @@ class AddMovieFragment : Fragment() {
                 }
                 else -> {
 
+
 //                    uploadImage(movieImageUrl)
                 }
             }
 
-            val movieGenres = result.substring(0, result.length - 1)
+            val movieGenres = if(result.length >1)result.substring(0, result.length - 1) else result
             val movieTitle = editTextTitle.text.toString()
             val movieReleaseDate = editTextReleaseDate.text.toString()
             val movieTicket = editTextTicket.text.toString()
