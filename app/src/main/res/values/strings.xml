@@ -18,4 +18,37 @@
     <string name="add_movie_str">Add Movie</string>
     <string name="add_movie_str_major">ADD MOVIE</string>
     <string name="price_str">Price:</string>
+    <string name="sign_in_str">Sign In</string>
+    <string name="rating_str_item">Rating:</string>
+    <string name="genre_str_item">Genre:</string>
+    <string name="access_movies_str">ACCESS MOVIES</string>
+    <string name="sign_out_str">Sign Out</string>
+    <string name="select_genre_str">Select Genre</string>
+    <string name="action_str">Action</string>
+    <string name="comedy_str">Comedy</string>
+    <string name="drama_str">Drama</string>
+    <string name="fantasy_str">Fantasy</string>
+    <string name="horror_str">Horror</string>
+    <string name="mystery_str">Mystery</string>
+    <string name="romance_str">Romance</string>
+    <string name="thriller_str">Thriller</string>
+
+    <!--    array for rating spinner -->
+    <string-array name="rating">
+        <item> 1 </item>
+        <item> 2 </item>
+        <item> 3 </item>
+        <item> 4 </item>
+        <item> 5 </item>
+    </string-array>
+
+    <string-array name="country">
+        <item> Nigeria </item>
+        <item> France </item>
+        <item> United State </item>
+        <item> China </item>
+        <item> Spain </item>
+    </string-array>
+
+
 </resources>

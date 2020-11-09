@@ -10,26 +10,15 @@ import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.ItemMoviesBinding
 
-class MoviePhotoAdapter ( val movies: MutableList<Movie>) : RecyclerView.Adapter<MoviePhotoAdapter.MovieViewHolder>(){
+class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>(){
 
 
-    inner class MovieViewHolder (private val binding: ItemMoviesBinding) : RecyclerView.ViewHolder(binding.root) {
+     class MovieViewHolder (private val binding: ItemMoviesBinding) :  RecyclerView.ViewHolder(binding.root) {
+        private lateinit var movie: Movie
 
-        init {
-            binding.root.setOnClickListener {
-                val position = bindingAdapterPosition
-//                if (position != RecyclerView.NO_POSITION) {
-//                    val item = getItem(position)
-//
-//                    if (item != null) {
-//                        listener.onItemClick(item)
-//                    }
-//
-//                }
-            }
-        }
+        fun bind (movie : Movie, action: OnItemClick) {
 
-        fun bind (movie : Movie) {
+            this.movie  = movie
             binding.apply {
                 Glide.with(itemView)
                     .load(R.drawable.sixunderground)
@@ -43,28 +32,36 @@ class MoviePhotoAdapter ( val movies: MutableList<Movie>) : RecyclerView.Adapter
                 itemMovieRating.text = movie.rating
                 itemPriceTicket.text = movie.ticketPrice
             }
+
+            itemView.setOnClickListener {
+              action.onItemClick(movie, adapterPosition)
+            }
         }
 
-    }
 
-    interface OnItemClickListener {
-        fun onItemClick(movie: Movie)
-    }
+     }
 
-    companion object {
-        private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                oldItem.id == newItem.id
-        }
-    }
+
+
+//    companion object {
+//        private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
+//            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
+//                oldItem.id == newItem.id
+//
+//            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
+//                oldItem.id == newItem.id
+//        }
+//    }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = movies[position]
+        if (currentItem != null ) {
+            holder.bind(currentItem, listener)
+        }
 
-        holder.bind(currentItem)
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {

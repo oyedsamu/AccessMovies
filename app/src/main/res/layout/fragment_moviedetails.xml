@@ -30,7 +30,7 @@
                 android:contentDescription="@string/profile_page"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/movie_title_background"
+                android:src="@drawable/sixunderground"
                 app:layout_collapseMode="parallax" />
 
             <View
