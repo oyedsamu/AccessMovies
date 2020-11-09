@@ -16,3 +16,4 @@ data class Movie (
     val genre : String,
     val image : String
 )
+

@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.decadevs.accessmovies.data.User
 import com.decadevs.accessmovies.databinding.FragmentSignUpBinding
 import com.decadevs.accessmovies.utils.Constants
 import com.decadevs.accessmovies.utils.Validator
@@ -25,6 +26,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class SignUpFragment : Fragment() {
@@ -32,6 +35,7 @@ class SignUpFragment : Fragment() {
     private lateinit var mAuth: FirebaseAuth
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
+    private lateinit var database: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +51,7 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        database = FirebaseDatabase.getInstance().reference
         mAuth = FirebaseAuth.getInstance()
         view.setOnClickListener {
             it.hideKeyboard()
@@ -54,7 +59,7 @@ class SignUpFragment : Fragment() {
 
         binding.signUpSignUpBtn.setOnClickListener {
             val validator = Validator()
-            val username = binding.signUpUsernameEt.text.toString()
+            val username = binding.signUpNameEt.text.toString()
             val email = binding.signUpEmailEt.text.toString()
             val password = binding.signUpPasswordEt.text.toString()
 
@@ -64,13 +69,13 @@ class SignUpFragment : Fragment() {
 
             if (!validateUsername && validateEmail && validatePassword) {
                 view.hideKeyboard()
-                binding.signUpUsernameEt.text.clear()
+                binding.signUpNameEt.text.clear()
                 binding.signUpEmailEt.text.clear()
                 binding.signUpPasswordEt.text.clear()
                 binding.signUpProgressBarPb.visibility = View.VISIBLE
 
                 /** MAKE NETWORK CALL TO REGISTER NEW USER */
-                registerNewUser(email, password)
+                registerNewUser(username, email, password)
             }
 
             if (validateUsername || !validateEmail || !validatePassword) {
@@ -102,11 +107,19 @@ class SignUpFragment : Fragment() {
         super.onDestroy()
     }
 
-    fun registerNewUser(email: String, password: String) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(requireActivity()
+    fun registerNewUser(username: String, email: String, password: String) {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
+            requireActivity()
         ) { task ->
             if (task.isSuccessful) {
                 Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
+                val key = mAuth.currentUser?.uid
+                val user = User(username, email)
+                if (key != null) {
+                    database.child("users").child(key).setValue(user)
+                }
+                // Make a call to firebase database and save the username and email address.
+                // This will be called on Login and the username will be gotten as the name.
                 val initialScreen = Constants.fragment
                 if (initialScreen != null) {
                     findNavController().navigate(initialScreen)
