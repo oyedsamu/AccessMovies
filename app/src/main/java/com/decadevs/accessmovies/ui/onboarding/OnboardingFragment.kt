@@ -1,18 +1,17 @@
 package com.decadevs.accessmovies.ui.onboarding
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.decadevs.accessmovies.R
+import com.decadevs.accessmovies.adapters.OnBoardingViewPagerAdapter
 import com.decadevs.accessmovies.databinding.FragmentOnboardingBinding
 import com.decadevs.accessmovies.utils.hideStatusBar
 import com.google.android.material.tabs.TabLayoutMediator
-import com.decadevs.accessmovies.adapters.OnBoardingViewPagerAdapter
 
 class OnboardingFragment : Fragment() {
 

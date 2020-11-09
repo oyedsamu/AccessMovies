@@ -38,7 +38,7 @@ class MovieAdapter(val movies: MutableList<Movie>, var listener: OnItemClick) :
                 action.onItemClick(movie, adapterPosition)
             }
         }
-    }
+     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = movies[position]
@@ -46,9 +46,7 @@ class MovieAdapter(val movies: MutableList<Movie>, var listener: OnItemClick) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-
         val binding = ItemMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
         return MovieViewHolder(binding)
     }
 
