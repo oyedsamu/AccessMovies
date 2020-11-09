@@ -2,6 +2,7 @@ package com.decadevs.accessmovies.data
 
 import com.google.firebase.database.Exclude
 
+/** The data class for the Movie */
 data class Movie (
     @get:Exclude
     var id : String,

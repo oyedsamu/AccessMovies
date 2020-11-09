@@ -10,14 +10,16 @@ import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.ItemMoviesBinding
 
-class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>(){
+class MovieAdapter(val movies: MutableList<Movie>, var listener: OnItemClick) :
+    RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
 
-     class MovieViewHolder (private val binding: ItemMoviesBinding) :  RecyclerView.ViewHolder(binding.root) {
+    class MovieViewHolder(private val binding: ItemMoviesBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         private lateinit var movie: Movie
 
-        fun bind (movie : Movie, action: OnItemClick) {
-            this.movie  = movie
+        fun bind(movie: Movie, action: OnItemClick) {
+            this.movie = movie
             binding.apply {
                 Glide.with(itemView)
                     .load(R.drawable.sixunderground)
@@ -33,10 +35,10 @@ class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) :
             }
 
             itemView.setOnClickListener {
-              action.onItemClick(movie, adapterPosition)
+                action.onItemClick(movie, adapterPosition)
             }
         }
-     }
+    }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = movies[position]
@@ -45,7 +47,7 @@ class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
 
-        val binding = ItemMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false )
+        val binding = ItemMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return MovieViewHolder(binding)
     }
