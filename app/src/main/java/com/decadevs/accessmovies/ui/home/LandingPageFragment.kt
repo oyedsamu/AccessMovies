@@ -18,7 +18,9 @@ import com.decadevs.accessmovies.adapters.MovieAdapter
 import com.decadevs.accessmovies.adapters.OnItemClick
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentLandingPageBinding
+import com.decadevs.accessmovies.utils.ConnectionType
 import com.decadevs.accessmovies.utils.Constants
+import com.decadevs.accessmovies.utils.NetworkMonitorUtil
 import com.decadevs.accessmovies.utils.showStatusBar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -27,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClick {
+
+    private lateinit var networkMonitor: NetworkMonitorUtil
 
     //    private val adapter = MovieAdapter(mutableListOf(), this)
     var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies");
@@ -40,6 +44,9 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
 
         _binding = FragmentLandingPageBinding.bind(view)
 
+        networkMonitor = NetworkMonitorUtil(requireActivity())
+
+        checkForNetwork()
         /** REAL TIME UPDATE OF MOVIES */
         moviesListener()
 
@@ -157,4 +164,36 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
             }
         })
     }
+
+
+    override fun onResume() {
+        super.onResume()
+        networkMonitor.register()
+    }
+
+
+    private fun checkForNetwork(){
+        networkMonitor.result = { isAvailable, type ->
+
+            activity?.runOnUiThread {
+                when (isAvailable) {
+                    true -> {
+                        when (type) {
+                            ConnectionType.Wifi -> {
+                                Log.i("NETWORK_MONITOR_STATUS", "Wifi Connection")
+                            }
+                            ConnectionType.Cellular -> {
+                                Log.i("NETWORK_MONITOR_STATUS", "Cellular Connection")
+                            }
+                            else -> { }
+                        }
+                    }
+                    false -> {
+                        Log.i("NETWORK_MONITOR_STATUS", "No Connection")
+                    }
+                }
+            }
+        }
+    }
+
 }
