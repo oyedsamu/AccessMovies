@@ -4,12 +4,14 @@ import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
 import android.content.ActivityNotFoundException
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +20,17 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.decadevs.accessmovies.R
+import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentAddMovieBinding
 import com.decadevs.accessmovies.validation.Validation
+import com.decadevs.accessmovies.viewmodel.MovieViewModel
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.util.*
 import java.util.jar.Manifest
 
@@ -30,21 +39,13 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
 
     private var _binding : FragmentAddMovieBinding? = null
-
-
     private val binding get() = _binding!!
 
     private lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
-
     private lateinit var date : String
 
-
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var movieViewModel: MovieViewModel
+    var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies");
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -53,10 +54,6 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         /** set navigation arrow from drawable **/
         binding.fragmentAddMovieToolbar.toolbarFragment.setNavigationIcon(R.drawable.ic_arrow_back_)
-
-
-
-
 
         /** Array adapter for spinner drop down for sex **/
         ArrayAdapter.createFromResource(
@@ -68,8 +65,6 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
             ratingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             binding.fragmentAddMovieCountryEt.adapter = ratingAdapter
-
-
         }
 
         /** Array adapter for spinner drop down for sex **/
@@ -82,16 +77,13 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
             countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             binding.fragmentAddMovieRatingsEt.adapter = countryAdapter
-
         }
 
         binding.fragmentAddMovieUpPhotoBtn.setOnClickListener {
             checkRunTimePermission()
         }
 
-
         return binding.root
-
     }
 
 
@@ -101,6 +93,9 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        /** INITIALISE VIEWMODEL */
+        movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
 
         // Fields required to fill
         val editTextTitle = binding.fragmentAddMovieTitleEt
@@ -113,22 +108,13 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
             findNavController().popBackStack()
         }
 
-
-
-
-
-
-
-
-
-
         // Validate user input
         binding.fragmentAddMovieAddImageBtn.setOnClickListener {
 
-           val checkUserInput = Validation(editTextTitle,
-                   editTextReleaseDate, editTextTicket, editTextDescription )
+//            /** ADD MOVIE TO DATABASE */
+//            addMovie()
 
-
+           val checkUserInput = Validation(editTextTitle, editTextReleaseDate, editTextTicket, editTextDescription )
 
             val actionCb = binding.fragmentAddMovieGenreAction.isChecked
             val comedyCb = binding.fragmentAddMovieGenreComedy.isChecked
@@ -180,14 +166,11 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
             } else if(result.isEmpty()) {
                 Toast.makeText(requireContext(), "Click at least a genre", Toast.LENGTH_SHORT).show()
             } else {
+                /** ADD MOVIE TO DATABASE */
+                addMovie()
                 findNavController().navigate(R.id.landingPage)
             }
-
         }
-
-
-
-
 
         val dateButton = binding.fragmentAddMovieReleaseDateEt
 
@@ -202,12 +185,21 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
             dateButton.setText(date)
         }
 
-        }
-
-
-
-
-
+//        /** LISTEN FOR VALUE CHANGE */
+//        moviesDatabase.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                for (movieSnapshot in dataSnapshot.children) {
+//                    Log.d("movie", "$movieSnapshot")
+//                }
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Getting Post failed, log a message
+//                Log.w(ContentValues.TAG, "loadComment:onCancelled", databaseError.toException())
+//                // ...
+//            }
+//        })
+    }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         parent?.getItemAtPosition(position)
@@ -304,10 +296,26 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    private fun addMovie() {
+        val newMovie = Movie("4", "The End Of The World!", "Mooo Ha Ha Haaaaaaaa...",
+            "Nov 2020", "5", "1000", "La La Land", "Apocalypse", "slfkansdfjdsh")
+        /** ADD NEW MOVIE TO DATABASE */
+        movieViewModel.addNewMovie(newMovie)
 
-
-
-
+        /** OBSERVE RESPONSE */
+        movieViewModel.newMovieResult?.observe({ lifecycle }, {
+            if (it == null) {
+                /** NAVIGATE TO LANDING PAGE */
+                Toast.makeText(this.context, "Movie Successfully added!", Toast.LENGTH_SHORT).show()
+//                Snackbar.make(this.context, "Movie Successfully added!", Snackbar.LENGTH_LONG).show()
+                findNavController().navigate(R.id.landingPage)
+            } else {
+                /** SHOW ERROR MESSAGE */
+                Toast.makeText(this.context, "Something went wrong. Movie could not be added.", Toast.LENGTH_SHORT).show()
+//                Snackbar.make(this.context, "Something went wrong. Movie could not be added.", Snackbar.LENGTH_LONG).show()
+            }
+        })
+    }
 }
 
 
