@@ -170,8 +170,8 @@
             android:id="@+id/fragment_add_movie_genre_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/action_str"
             android:layout_marginStart="8dp"
+            android:text="@string/action_str"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_add_movie_genre_header" />
 
@@ -205,9 +205,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/horror_str"
-            app:layout_constraintTop_toTopOf="@id/fragment_add_movie_genre_fantasy"
             app:layout_constraintStart_toEndOf="@id/fragment_add_movie_genre_fantasy"
-            />
+            app:layout_constraintTop_toTopOf="@id/fragment_add_movie_genre_fantasy" />
 
         <CheckBox
             android:id="@+id/fragment_add_movie_genre_mystery"
@@ -258,8 +257,7 @@
         android:id="@+id/fragment_add_movie_add_image_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/custom_button_bg"
         android:paddingStart="50dp"
         android:paddingTop="15dp"
@@ -268,20 +266,20 @@
         android:text="@string/add_movie_str"
         android:textAllCaps="false"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_add_movie_up_photo_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_add_movie_user_movie" />
 
     <ImageView
         android:id="@+id/fragment_add_movie_user_movie"
-        android:layout_width="50dp"
-        android:layout_height="45dp"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/fragment_add_movie_up_photo_btn"
+        android:scaleType="fitXY"
         app:layout_constraintStart_toEndOf="@+id/fragment_add_movie_up_photo_btn"
-        app:layout_constraintTop_toTopOf="@+id/fragment_add_movie_up_photo_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_parent"
+        tools:layout_editor_absoluteY="672dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
