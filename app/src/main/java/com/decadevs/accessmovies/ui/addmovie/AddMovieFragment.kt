@@ -26,10 +26,11 @@ import com.decadevs.accessmovies.validation.Validation
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.decadevs.accessmovies.viewmodel.MovieViewModel
+import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 
-class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class AddMovieFragment : Fragment() {
 
     private var _binding: FragmentAddMovieBinding? = null
     private val binding get() = _binding!!
@@ -139,8 +140,6 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         // Validate user input
         binding.fragmentAddMovieAddImageBtn.setOnClickListener {
-//            /** ADD MOVIE TO DATABASE */
-//            addMovie()
             val checkUserInput = Validation(
                 editTextTitle,
                 editTextReleaseDate,
@@ -206,30 +205,31 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 }
                 else -> {
 
-                    uploadImage(movieImageUrl)
+//                    uploadImage(movieImageUrl)
                 }
             }
 
-//            val movieGenres = result.substring(0, result.length - 1)
-//            val movieTitle = editTextTitle.text.toString()
-//            val movieReleaseDate = editTextReleaseDate.text.toString()
-//            val movieTicket = editTextTicket.text.toString()
-//            val movieDescription = editTextDescription.text.toString()
-//
-//            val movie = Movie(
-//                "1",
-//                movieTitle,
-//                movieDescription,
-//                movieReleaseDate,
-//                movieRating,
-//                movieTicket,
-//                movieCountry,
-//                movieGenres,
-//            )
+            val movieGenres = result.substring(0, result.length - 1)
+            val movieTitle = editTextTitle.text.toString()
+            val movieReleaseDate = editTextReleaseDate.text.toString()
+            val movieTicket = editTextTicket.text.toString()
+            val movieDescription = editTextDescription.text.toString()
+
+            val movie = Movie(
+                "1",
+                movieTitle,
+                movieDescription,
+                movieReleaseDate,
+                movieRating,
+                movieTicket,
+                movieCountry,
+                movieGenres,
+                "imageURL"
+            )
 
             /** ADD MOVIE TO DATABASE */
-
-
+            addMovie(movie)
+            findNavController().popBackStack()
         }
         /** Show the date button on click of date button **/
         editTextReleaseDate.setOnClickListener {
@@ -242,9 +242,7 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 date = "${month + 1}/$day/$year"
                 editTextReleaseDate.setText(date)
             }
-
     }
-
 
     /** Show Date picker Dialog Function **/
     @RequiresApi(Build.VERSION_CODES.M)
@@ -334,8 +332,6 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val myImage = binding.fragmentAddMovieUserMovie
 
             myImage.setImageURI(imageUri)
-
-
         }
     }
 
@@ -367,13 +363,14 @@ class AddMovieFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     }
 
-    private fun addMovie() {
-        val newMovie = Movie(
-            "4", "The End Of The World!", "Mooo Ha Ha Haaaaaaaa...",
-            "Nov 2020", "5", "1000", "La La Land", "Apocalypse", "slfkansdfjdsh"
-        )
+    private fun addMovie(movie: Movie) {
+//        val newMovie = Movie(
+//            "4", "The End Of The World!", "Mooo Ha Ha Haaaaaaaa...",
+//            "Nov 2020", "5", "1000", "La La Land", "Apocalypse", "slfkansdfjdsh"
+//        )
         /** ADD NEW MOVIE TO DATABASE */
-        movieViewModel.addNewMovie(newMovie)
+        movieViewModel.addNewMovie(movie)
+        Snackbar.make(requireView(), "Movie Successfully Added", Snackbar.LENGTH_LONG).show()
 
         /** OBSERVE RESPONSE */
         movieViewModel.newMovieResult?.observe({ lifecycle }, {

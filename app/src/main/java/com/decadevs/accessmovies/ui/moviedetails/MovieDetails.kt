@@ -34,7 +34,8 @@ class MovieDetails : Fragment() {
     private lateinit var movieViewModel: MovieViewModel
     var commentsDatabase = FirebaseDatabase.getInstance().getReference("Comments");
 
-    //        val movieId = bundle?.getString("MoviesId")!!
+//    val bundle = arguments
+//    val movieId = bundle?.getString("MoviesId")!!
     val movieId = Constants.movieId
 
     override fun onCreateView(
@@ -71,9 +72,6 @@ class MovieDetails : Fragment() {
         super.onStart()
         val name: String
         val currentUser = mAuth.currentUser
-
-        val bundle = arguments
-
 
             if (currentUser != null) {
             name = GetNameFromEmail().getNameFrom(currentUser.email.toString())
@@ -155,7 +153,6 @@ class MovieDetails : Fragment() {
                 }
                 /** UPDATE COMMENTS RECYCLER VIEW */
                 movieComments.reverse()
-
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
