@@ -1,24 +1,27 @@
 package com.decadevs.accessmovies.viewmodel
 
+import android.content.ContentValues
+import android.util.Log
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
+import androidx.room.Database
+import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.Comment
 import com.decadevs.accessmovies.data.Movie
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.*
 import java.lang.Exception
+import java.lang.ref.Reference
 
 class MovieViewModel(): ViewModel() {
-    val moviesDatabase = FirebaseDatabase.getInstance().reference.child("movies")
-    val commentsDatabase = FirebaseDatabase.getInstance().reference
 
-    // Write a message to the database
-    var database = FirebaseDatabase.getInstance().getReference("access-movies");
-
-
+    /** CREATE PATH FOR MOVIES AND COMMENTS IN THE DATABASE */
+    var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies");
+    var commentsDatabase = FirebaseDatabase.getInstance().getReference("Comments");
 
     /** LIVEDATA TO HOLD NEW MOVIE RESULT */
     private val _newMovieResult: MutableLiveData<Exception>? = null
@@ -33,7 +36,7 @@ class MovieViewModel(): ViewModel() {
     /** LIVEDATA TO HOLD NEW COMMENT RESULT */
     private val _newCommentResult: MutableLiveData<Exception>? = null
     val newCommentResult: LiveData<Exception>?
-        get() = _newMovieResult
+        get() = _newCommentResult
 
     /** LIVEDATA TO HOLD LIST OF MOVIES */
     private val _comments: MutableLiveData<List<Comment>>? = null
@@ -43,18 +46,20 @@ class MovieViewModel(): ViewModel() {
 
 
     fun addNewMovie(movie: Movie) {
-        database.child("1").setValue("Hello, World!");
-//        /** ADD NEW MOVIE */
-//        movie.id = moviesDatabase.push().key.toString()
-//        moviesDatabase.child(movie.id).setValue(movie)
-//            .addOnCompleteListener{
-//                /** HANDLE RESULT */
-//                if(it.isSuccessful) {
-//                    _newMovieResult?.value = null
-//                } else {
-//                    _newMovieResult?.value = it.exception
-//                }
-//            }
+//        database.child("1").setValue("Hello, World!");
+        /** ADD NEW MOVIE */
+        movie.id = moviesDatabase.push().key.toString()
+        moviesDatabase.child(movie.id).setValue(movie)
+            .addOnCompleteListener(){
+                Log.d("movie", "hgfcdxrcfvgbhjnkm")
+
+                /** HANDLE RESULT */
+                if(it.isSuccessful) {
+                    _newMovieResult?.value = null
+                } else {
+                    _newMovieResult?.value = it.exception
+                }
+            }
     }
 
     fun getAllMovies() {
@@ -81,9 +86,11 @@ class MovieViewModel(): ViewModel() {
         comment.id = commentsDatabase.push().key.toString()
         commentsDatabase.child(comment.id).setValue(comment)
             .addOnCompleteListener{
+
                 /** HANDLE RESULT */
                 if(it.isSuccessful) {
                     _newCommentResult?.value = null
+//                    Log.d("New Comment", "Successfully added")
                 } else {
                     _newCommentResult?.value = it.exception
                 }
@@ -98,7 +105,8 @@ class MovieViewModel(): ViewModel() {
                     val comments = mutableListOf<Comment>()
                     for(commentShot in snapshot.children) {
                         val comment = commentShot.getValue(Comment::class.java)
-                        comment?.id = commentShot.key.toString()
+//                        comment?.movieId = commentShot.key.toString()
+                        comment?.movieId = commentShot.key.toString()
 
                         /** CHECK FOR NULLABILITY */
                         comment?.let{comments.add(it)}
@@ -108,4 +116,5 @@ class MovieViewModel(): ViewModel() {
             }
         })
     }
+
 }
