@@ -46,6 +46,7 @@ class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) :
 
 
 
+
 //    companion object {
 //        private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
 //            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
@@ -58,10 +59,12 @@ class MovieAdapter (val movies: MutableList<Movie>, var listener: OnItemClick) :
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = movies[position]
-
         if (currentItem != null ) {
             holder.bind(currentItem, listener)
         }
+
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {

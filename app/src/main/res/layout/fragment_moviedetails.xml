@@ -30,7 +30,7 @@
                 android:contentDescription="@string/profile_page"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/movie_title_background"
+                android:src="@drawable/sixunderground"
                 app:layout_collapseMode="parallax" />
 
             <View
@@ -229,9 +229,11 @@
                 android:id="@+id/movie_comment_et"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:autofillHints="Enter Comment" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/movie_comment_submit_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Comment" />

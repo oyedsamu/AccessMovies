@@ -17,6 +17,13 @@
             android:name="com.decadevs.accessmovies.ui.addmovie.AddMovieFragment"
             android:label="Add Image"
             tools:layout="@layout/fragment_add_movie" />
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.decadevs.accessmovies.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+
     <fragment
         android:id="@+id/movieDetails"
         android:name="com.decadevs.accessmovies.ui.MovieDetails"
@@ -27,14 +34,15 @@
         android:name="com.decadevs.accessmovies.ui.onboarding.OnboardingFragment"
         android:label="fragment_onboarding"
         tools:layout="@layout/fragment_onboarding" />
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.decadevs.accessmovies.ui.login.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+
+
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.decadevs.accessmovies.ui.signup.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
+
+
+
+
 </navigation>
