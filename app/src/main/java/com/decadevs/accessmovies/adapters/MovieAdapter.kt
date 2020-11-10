@@ -60,7 +60,7 @@ class MovieAdapter(val movies: MutableList<Movie>, var listener: OnItemClick) :
             this.movie = movie
             binding.apply {
                 Glide.with(itemView)
-                    .load(R.drawable.sixunderground)
+                    .load(movie.image)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_error)

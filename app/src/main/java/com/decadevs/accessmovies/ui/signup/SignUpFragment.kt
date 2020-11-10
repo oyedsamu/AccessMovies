@@ -1,31 +1,20 @@
 package com.decadevs.accessmovies.ui.signup
 
-import android.os.Build
-import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.Fragment
-import android.widget.Toast
-import androidx.annotation.ColorInt
-import com.decadevs.accessmovies.R
-import com.decadevs.accessmovies.databinding.FragmentOnboardingScreen1Binding
-import android.R.attr
-import android.content.ContentValues.TAG
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.User
 import com.decadevs.accessmovies.databinding.FragmentSignUpBinding
 import com.decadevs.accessmovies.utils.Constants
 import com.decadevs.accessmovies.utils.Validator
 import com.decadevs.accessmovies.utils.hideKeyboard
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -90,8 +79,7 @@ class SignUpFragment : Fragment() {
 
         /** MOVE TO LOGIN SCREEN */
         binding.signUpLogInTv.setOnClickListener {
-            Toast.makeText(this.context, "Implement Go To Sign In Screen", Toast.LENGTH_SHORT)
-                .show()
+            findNavController().navigate(R.id.loginFragment)
         }
     }
 
@@ -107,7 +95,7 @@ class SignUpFragment : Fragment() {
         super.onDestroy()
     }
 
-    fun registerNewUser(username: String, email: String, password: String) {
+    private fun registerNewUser(username: String, email: String, password: String) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
             requireActivity()
         ) { task ->
