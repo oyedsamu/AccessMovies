@@ -43,7 +43,6 @@ class MovieDetails : Fragment() {
     private val binding get() = _binding!!
     private lateinit var movieViewModel: MovieViewModel
     private var commentsDatabase = FirebaseDatabase.getInstance().getReference("Comments")
-    var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies")
     lateinit var commentRecycler: RecyclerView
     lateinit var mAdapter: CommentRecycler
     lateinit var movieId: String
@@ -89,7 +88,7 @@ class MovieDetails : Fragment() {
         binding.movieReleaseDate.text = releaseDate
         binding.movieGenres.text = genre
         binding.movieDescription.text = movieDescription
-//        binding.movieTicketPrice.text = ticketPrice
+        binding.ticketPrice.text = ticketPrice
         Glide.with(this)
             .load(image)
             .transition(DrawableTransitionOptions.withCrossFade())
