@@ -7,11 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
-
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-
-
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.decadevs.accessmovies.R
@@ -96,8 +93,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
         if (currentUser != null) {
             name = currentUser.displayName.toString()
             Constants.name = name
-
-            Log.d("name", "${currentUser.uid}")
             getUsername(currentUser.uid)
 
             binding.landingSignInTv.visibility = View.INVISIBLE
@@ -135,6 +130,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
 
     override fun onItemClick(item: Movie, position: Int) {
 
+
         var bundle = bundleOf(
             "id" to item.id,
             "title" to item.title,
@@ -146,9 +142,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
             "genre" to item.genre,
             "image" to item.image
         )
-
-
-        Constants.movieId = item.id
         findNavController().navigate(R.id.movieDetails, bundle)
     }
 
@@ -157,10 +150,8 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
             var name: String = ""
             override fun onDataChange(snapshot: DataSnapshot) {
                 name = snapshot.child(key).getValue(String::class.java).toString()
-                Log.d("name", "$name")
                 Constants.name = name
             }
-
             override fun onCancelled(error: DatabaseError) {
 
             }
@@ -198,7 +189,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                         )
                     )
                 }
-//                Log.d("allMovies", "$allMovies")
                 allMovies.reverse()
                 /** UPDATE MOVIES RECYCLER VIEW */
                 val recyclerView = binding.recyclerView
@@ -208,8 +198,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w(ContentValues.TAG, "loadComment:onCancelled", databaseError.toException())
                 // ...
             }
         })

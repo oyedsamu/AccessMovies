@@ -164,22 +164,13 @@ class MovieDetails : Fragment() {
     /** Function for Comments to be added */
     fun addComment(name: String, comment: String, movieId: String) {
         /** ADD NEW COMMENT TO DATABASE */
-        val comment = Comment("1", movieId, name, comment)
-        movieViewModel.addNewComment(comment)
 
-        /** OBSERVE RESPONSE */
-        movieViewModel.newMovieResult?.observe(viewLifecycleOwner, Observer {
-            if (it == null) {
-                Snackbar.make(requireView(), "Comment Successfully added", Snackbar.LENGTH_LONG)
-                    .show()
-            } else {
-                Snackbar.make(
-                    requireView(),
-                    "Something went wrong. Comment could not be added.",
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
-        })
+        if(name.isNotEmpty() && comment.isNotEmpty() && movieId.isNotEmpty()){
+            val comment = Comment("1", movieId, name, comment)
+            movieViewModel.addNewComment(comment)
+        } else {
+            Toast.makeText(this.context, "Please enter a comment", Toast.LENGTH_LONG).show()
+        }
     }
 
     /** LISTEN FOR COMMENT CHANGE */
@@ -194,7 +185,7 @@ class MovieDetails : Fragment() {
                     val movieId = snapshot.child("movieId").value.toString()
                     allComments.add(Comment("1", movieId, username, comment))
                 }
-                Log.d("allComments", "$allComments")
+
                 val movieComments = arrayListOf<Comment>()
                 /** GET COMMENTS FOR CURRENT MOVIE */
                 for (comment in allComments) {
@@ -212,7 +203,6 @@ class MovieDetails : Fragment() {
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
-                Log.w(ContentValues.TAG, "loadComment:onCancelled", databaseError.toException())
                 // ...
             }
         })
