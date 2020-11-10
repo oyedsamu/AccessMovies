@@ -51,6 +51,21 @@
             android:layout_weight="1"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/landing_search_sv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/search_background"
+        android:textCursorDrawable="@null"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/landing_heading_ll"
+        app:queryBackground="@null"
+        app:queryHint="Search" />
+
     <ImageView
         android:id="@+id/landing_addMovie_imgBtn"
         android:layout_width="50dp"
@@ -71,7 +86,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/landing_heading_ll"
+        app:layout_constraintTop_toBottomOf="@+id/landing_search_sv"
         tools:listitem="@layout/item_movies" />
 
 <!--    <Button-->
