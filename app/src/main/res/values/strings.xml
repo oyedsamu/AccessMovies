@@ -45,6 +45,8 @@
     <string name="_5_0">5.0</string>
     <string name="comment_name">Name</string>
     <string name="comment_body">Comment</string>
+    <string name="omo_this_movie_dope_die_str">Omo! This movie dope die!!</string>
+    <string name="daniel_str">Daniel</string>
 
     <!--    array for rating spinner -->
     <string-array name="rating">
