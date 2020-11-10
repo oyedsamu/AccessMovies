@@ -51,7 +51,6 @@ class MovieViewModel(): ViewModel() {
         movie.id = moviesDatabase.push().key.toString()
         moviesDatabase.child(movie.id).setValue(movie)
             .addOnCompleteListener(){
-                Log.d("movie", "hgfcdxrcfvgbhjnkm")
 
                 /** HANDLE RESULT */
                 if(it.isSuccessful) {

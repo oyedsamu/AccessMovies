@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/profile_page"
                 android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:src="@drawable/sixunderground"
                 app:layout_collapseMode="parallax" />
 
@@ -69,7 +69,7 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="70dp"
                 android:background="@drawable/movie_item_background"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -112,40 +112,6 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/genres"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/movie_country"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/nigeria"
-                        android:textColor="@color/white"
-                        android:textSize="25sp" />
-
-                    <TextView
-                        android:id="@+id/country_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:text="@string/country"
-                        android:textColor="@color/blue"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/release_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -177,6 +143,68 @@
                         android:textStyle="bold" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/ticket_price_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/ticket_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/ticket_price_default"
+                        android:textColor="@color/white"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/ticket_price_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/ticket_price_title"
+                        android:textColor="@color/blue"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/genres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/country_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/country"
+                    android:textColor="@color/blue"
+                    android:paddingStart="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/movie_country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:text="@string/nigeria"
+                    android:textSize="15sp" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -199,7 +227,6 @@
                     android:id="@+id/movie_genres"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:paddingStart="10dp"
                     android:text="@string/action"
                     android:textSize="15sp"

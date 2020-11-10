@@ -41,12 +41,17 @@
     <string name="year">2020</string>
     <string name="country">Country</string>
     <string name="nigeria">Nigeria</string>
-    <string name="ratings">Ratings</string>
+    <string name="ratings">Rating</string>
     <string name="_5_0">5.0</string>
     <string name="comment_name">Name</string>
     <string name="comment_body">Comment</string>
     <string name="omo_this_movie_dope_die_str">Omo! This movie dope die!!</string>
     <string name="daniel_str">Daniel</string>
+    <string name="ticket_price_title">Ticket Price</string>
+    <string name="ticket_price_default">100</string>
+    <string name="next">Next</string>
+    <string name="onboarding2_title_str">Know Which Movie Is Worth Watching</string>
+    <string name="onboarding3_title_str">Real Time Updates Of Movies</string>
 
     <!--    array for rating spinner -->
     <string-array name="rating">
@@ -60,7 +65,7 @@
     <string-array name="country">
         <item> Nigeria </item>
         <item> France </item>
-        <item> United State </item>
+        <item> United States </item>
         <item> China </item>
         <item> Spain </item>
     </string-array>

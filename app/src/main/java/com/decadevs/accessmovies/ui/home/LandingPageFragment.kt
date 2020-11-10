@@ -129,10 +129,19 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
     }
 
     override fun onItemClick(item: Movie, position: Int) {
-        Log.d("CHECKING", "clicked")
-        val CONSTANT_MOVIES_ID = "MoviesId"
-        val bundle = bundleOf(CONSTANT_MOVIES_ID to item.id)
-        Constants.movieId = item.id
+
+
+        var bundle = bundleOf(
+            "id" to item.id,
+            "title" to item.title,
+            "movieDescription" to item.movieDescription,
+            "releaseDate" to item.releaseDate,
+            "rating" to item.rating,
+            "ticketPrice" to item.ticketPrice,
+            "country" to item.country,
+            "genre" to item.genre,
+            "image" to item.image
+        )
         findNavController().navigate(R.id.movieDetails, bundle)
     }
 

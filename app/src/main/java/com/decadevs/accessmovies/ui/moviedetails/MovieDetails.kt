@@ -18,6 +18,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.adapters.CommentRecycler
 import com.decadevs.accessmovies.data.Comment
@@ -43,8 +45,8 @@ class MovieDetails : Fragment() {
     private var commentsDatabase = FirebaseDatabase.getInstance().getReference("Comments")
     lateinit var commentRecycler: RecyclerView
     lateinit var mAdapter: CommentRecycler
+    lateinit var movieId: String
 
-    val movieId = Constants.movieId
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,18 +54,47 @@ class MovieDetails : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentMoviedetailsBinding.inflate(inflater, container, false)
+        view?.setOnClickListener {
+            it.hideKeyboard()
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         /** INITIALISE VIEWMODEL */
-
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
 
         commentRecycler = binding.movieDetailsCommentRecyclerList
         commentRecycler.setHasFixedSize(true)
         commentRecycler.layoutManager = LinearLayoutManager(requireContext())
+
+        /** GET BUNDLE ARGUMENTS */
+        movieId = arguments?.getString("id").toString()
+
+        val title = arguments?.getString("title")
+        val movieDescription = arguments?.getString("movieDescription")
+        var releaseDate = arguments?.getString("releaseDate")
+        releaseDate = releaseDate!!.substring(releaseDate!!.length - 4)
+        val rating = arguments?.getString("rating")
+        val ticketPrice = arguments?.getString("ticketPrice")
+        val country = arguments?.getString("country")
+        val genre = arguments?.getString("genre")
+        val image = arguments?.getString("image")
+
+        /** POPULATE SCREEN WITH DETAILS */
+        binding.movieRatings.text = rating
+        binding.movieCountry.text = country
+        binding.movieReleaseDate.text = releaseDate
+        binding.movieGenres.text = genre
+        binding.movieDescription.text = movieDescription
+        binding.ticketPrice.text = ticketPrice
+        Glide.with(this)
+            .load(image)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .error(R.drawable.sixunderground)
+            .into(binding.movieImg)
+
 
         /** Set the Color of the bar to be inferred from the main image */
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.sixunderground)
@@ -85,14 +116,11 @@ class MovieDetails : Fragment() {
             (activity as AppCompatActivity).setSupportActionBar(toolbar)
         }
 
-        (activity as AppCompatActivity).supportActionBar?.title = "New Title"
+        (activity as AppCompatActivity).supportActionBar?.title = title.toString()
 
         /** REAL TIME UPDATE OF COMMENTS */
         commentsListener()
         view.hideKeyboard()
-
-        /** FILL DETAILS SCREEN */
-//        moviesListener()
     }
 
     /** Checks if the user is logged in */
@@ -108,6 +136,7 @@ class MovieDetails : Fragment() {
             // Implement Onclick listener for the button here
             binding.movieCommentSubmitButton.setOnClickListener {
                 val comment = binding.movieCommentEt.text.toString()
+
                 if (movieId != null) {
                     addComment(name, comment, movieId)
                 }
@@ -126,7 +155,6 @@ class MovieDetails : Fragment() {
         }
     }
 
-
     /** Prevents memory leaks by setting the binding to null at the end of lifecycle */
     override fun onDestroyView() {
         super.onDestroyView()
@@ -136,22 +164,13 @@ class MovieDetails : Fragment() {
     /** Function for Comments to be added */
     fun addComment(name: String, comment: String, movieId: String) {
         /** ADD NEW COMMENT TO DATABASE */
+
         if(name.isNotEmpty() && comment.isNotEmpty() && movieId.isNotEmpty()){
             val comment = Comment("1", movieId, name, comment)
             movieViewModel.addNewComment(comment)
         } else {
             Toast.makeText(this.context, "Please enter a comment", Toast.LENGTH_LONG).show()
         }
-
-    }
-
-    fun getComments() {
-        /** CALL VIEWMODEL TO GET COMMENTS */
-        movieViewModel.getAllComments()
-    }
-
-    fun getMovie() {
-        /** CALL VIEWMODEL TO GET MOVIE DETAILS */
     }
 
     /** LISTEN FOR COMMENT CHANGE */
@@ -166,6 +185,7 @@ class MovieDetails : Fragment() {
                     val movieId = snapshot.child("movieId").value.toString()
                     allComments.add(Comment("1", movieId, username, comment))
                 }
+
                 val movieComments = arrayListOf<Comment>()
                 /** GET COMMENTS FOR CURRENT MOVIE */
                 for (comment in allComments) {
@@ -174,7 +194,6 @@ class MovieDetails : Fragment() {
                     }
                 }
                 /** UPDATE COMMENTS RECYCLER VIEW */
-                movieComments.reverse()
                 mAdapter = CommentRecycler(movieComments)
                 mAdapter.notifyDataSetChanged()
                 commentRecycler.adapter = mAdapter
@@ -187,53 +206,5 @@ class MovieDetails : Fragment() {
                 // ...
             }
         })
-    }
-
-    /** LISTEN FOR MOVIE CHANGE */
-//    private fun moviesListener() {
-//        moviesDatabase.addValueEventListener(object : ValueEventListener {
-//            var allMovies = arrayListOf<Movie>()
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                for (snapshot in dataSnapshot.children) {
-//                    val title = snapshot.child("title").value.toString()
-//                    val movieDescription = snapshot.child("movieDescription").value.toString()
-//                    val releaseDate = snapshot.child("releaseDate").value.toString()
-//                    val rating = snapshot.child("rating").value.toString()
-//                    val ticketPrice = snapshot.child("ticketPrice").value.toString()
-//                    val country = snapshot.child("country").value.toString()
-//                    val genre = snapshot.child("genre").value.toString()
-//                    val image = snapshot.child("image").value.toString()
-//
-//                    allMovies.add(Movie("1", title, movieDescription, releaseDate, rating, ticketPrice, country, genre, image))
-//                }
-//                Log.d("allMovies", "$allMovies")
-//                val movieComments = arrayListOf<Comment>()
-//                /** GET DETAILS FOR CURRENT MOVIE */
-//                for(movie in allMovies) {
-//                    if(movie.id == movieId) {
-//                        setMovieDetails(movie)
-//                    }
-//                }
-//                /** UPDATE COMMENTS RECYCLER VIEW */
-//                movieComments.reverse()
-//                mAdapter = CommentRecycler(movieComments)
-//                mAdapter.notifyDataSetChanged()
-//                commentRecycler.adapter = mAdapter
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Getting Post failed, log a message
-//                Log.w(ContentValues.TAG, "loadComment:onCancelled", databaseError.toException())
-//                // ...
-//            }
-//        })
-//    }
-
-    fun setMovieDetails(movie: Movie) {
-        binding.movieRatings.text = movie.rating
-        binding.movieCountry.text = movie.country
-        binding.movieReleaseDate.text = movie.releaseDate
-        binding.movieGenres.text = movie.genre
-        binding.movieDescription.text = movie.movieDescription
     }
 }
