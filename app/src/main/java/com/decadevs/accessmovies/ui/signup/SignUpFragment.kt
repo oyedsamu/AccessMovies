@@ -106,6 +106,8 @@ class SignUpFragment : Fragment() {
                 if (key != null) {
                     database.child("users").child(key).setValue(user)
                 }
+
+                requireView().hideKeyboard()
                 // Make a call to firebase database and save the username and email address.
                 // This will be called on Login and the username will be gotten as the name.
                 val initialScreen = Constants.fragment

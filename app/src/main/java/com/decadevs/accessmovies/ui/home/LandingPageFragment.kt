@@ -44,8 +44,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentLandingPageBinding.bind(view)
-
-
         networkMonitor = NetworkMonitorUtil(requireActivity())
 
         // call network checker method
@@ -168,18 +166,15 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
         })
     }
 
-
     // check network call
     override fun onResume() {
         super.onResume()
         networkMonitor.register()
     }
 
-
     //
-    private fun checkForNetwork(){
+    private fun checkForNetwork() {
         networkMonitor.result = { isAvailable, type ->
-
             activity?.runOnUiThread {
                 when (isAvailable) {
                     true -> {
@@ -190,7 +185,8 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                             ConnectionType.Cellular -> {
                                 Log.i("NETWORK_MONITOR_STATUS", "Cellular Connection")
                             }
-                            else -> { }
+                            else -> {
+                            }
                         }
                     }
                     false -> {
@@ -200,5 +196,4 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
             }
         }
     }
-
 }
