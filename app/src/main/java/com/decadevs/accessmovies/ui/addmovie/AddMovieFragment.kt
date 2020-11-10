@@ -23,6 +23,7 @@ import androidx.navigation.fragment.findNavController
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentAddMovieBinding
+import com.decadevs.accessmovies.utils.showStatusBar
 import com.decadevs.accessmovies.validation.Validation
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -32,8 +33,6 @@ import java.util.*
 
 
 class AddMovieFragment : Fragment() {
-
-
     /**
      * All needed
      */
@@ -59,7 +58,7 @@ class AddMovieFragment : Fragment() {
         val ratings = resources.getStringArray(R.array.rating)
         movieImageUrl = ""
 
-
+        showStatusBar()
         /** set navigation arrow from drawable **/
         binding.fragmentAddMovieToolbar.toolbarFragment.setNavigationIcon(R.drawable.ic_arrow_back_)
 
@@ -113,13 +112,9 @@ class AddMovieFragment : Fragment() {
                 }
             }
         }
-
-
-
         binding.fragmentAddMovieUpPhotoBtn.setOnClickListener {
             checkRunTimePermission()
         }
-
         return binding.root
     }
 
@@ -166,37 +161,14 @@ class AddMovieFragment : Fragment() {
 
             var result = ""
 
-            if (actionCb) {
-                result += "Action|"
-            }
-
-            if (comedyCb) {
-                result += "Comedy|"
-            }
-
-            if (dramaCb) {
-                result += "Drama|"
-            }
-
-            if (fantasyCb) {
-                result += "Fantasy|"
-            }
-
-            if (horrorCb) {
-                result += "Horror"
-            }
-
-            if (mysteryCb) {
-                result += "Mystery|"
-            }
-
-            if (romanceCb) {
-                result += "Romance|"
-            }
-
-            if (thrillerCb) {
-                result += "Thriller|"
-            }
+            if (actionCb) result += "Action|"
+            if (comedyCb) result += "Comedy|"
+            if (dramaCb) result += "Drama|"
+            if (fantasyCb) result += "Fantasy|"
+            if (horrorCb) result += "Horror"
+            if (mysteryCb) result += "Mystery|"
+            if (romanceCb) result += "Romance|"
+            if (thrillerCb) result += "Thriller|"
 
             when {
                 checkUserInput != null -> {
@@ -216,7 +188,8 @@ class AddMovieFragment : Fragment() {
                 }
             }
 
-            val movieGenres = if(result.isNotEmpty())result.substring(0, result.length - 1) else result
+            val movieGenres =
+                if (result.isNotEmpty()) result.substring(0, result.length - 1) else result
             val movieTitle = editTextTitle.text.toString()
             val movieReleaseDate = editTextReleaseDate.text.toString()
             val movieTicket = editTextTicket.text.toString()
