@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.decadevs.accessmovies.R
-import com.decadevs.accessmovies.data.User
 import com.decadevs.accessmovies.databinding.FragmentSignUpBinding
 import com.decadevs.accessmovies.utils.Constants
 import com.decadevs.accessmovies.utils.Validator
@@ -102,11 +101,9 @@ class SignUpFragment : Fragment() {
             if (task.isSuccessful) {
                 Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
                 val key = mAuth.currentUser?.uid
-                val user = User(username, email)
                 if (key != null) {
-                    database.child("users").child(key).setValue(user)
+                    database.child("users").child(key).setValue(username)
                 }
-
                 requireView().hideKeyboard()
                 // Make a call to firebase database and save the username and email address.
                 // This will be called on Login and the username will be gotten as the name.

@@ -23,10 +23,7 @@ import com.decadevs.accessmovies.utils.Constants
 import com.decadevs.accessmovies.utils.NetworkMonitorUtil
 import com.decadevs.accessmovies.utils.showStatusBar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClick {
 
@@ -34,7 +31,8 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
     private lateinit var networkMonitor: NetworkMonitorUtil
 
     //    private val adapter = MovieAdapter(mutableListOf(), this)
-    var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies");
+    var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies")
+    var usersDatabase = FirebaseDatabase.getInstance().getReference("users")
     private lateinit var mAuth: FirebaseAuth
 
     private var _binding: FragmentLandingPageBinding? = null
@@ -78,6 +76,10 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
         if (currentUser != null) {
             name = currentUser.displayName.toString()
             Constants.name = name
+
+            Log.d("name", "${currentUser.uid}")
+            getUsername(currentUser.uid)
+
             binding.landingSignInTv.visibility = View.INVISIBLE
             binding.landingSignOutTv.visibility = View.VISIBLE
             binding.landingAddMovieImgBtn.visibility = View.VISIBLE
@@ -117,6 +119,21 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
 //        val bundle = bundleOf(CONSTANT_MOVIES_ID to item.id)
         Constants.movieId = item.id
         findNavController().navigate(R.id.movieDetails)
+    }
+
+    fun getUsername(key: String){
+        usersDatabase.addListenerForSingleValueEvent(object: ValueEventListener{
+            var name: String = ""
+            override fun onDataChange(snapshot: DataSnapshot) {
+                name = snapshot.child(key).getValue(String::class.java).toString()
+                Log.d("name", "$name")
+                Constants.name = name
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 
     /** LISTEN FOR MOVIES CHANGE */
