@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/profile_page"
                 android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:src="@drawable/sixunderground"
                 app:layout_collapseMode="parallax" />
 

@@ -25,10 +25,7 @@ import com.decadevs.accessmovies.utils.hideKeyboard
 import com.decadevs.accessmovies.utils.NetworkMonitorUtil
 import com.decadevs.accessmovies.utils.showStatusBar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClick {
 
@@ -36,7 +33,8 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
     private lateinit var networkMonitor: NetworkMonitorUtil
 
     //    private val adapter = MovieAdapter(mutableListOf(), this)
-    var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies");
+    var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies")
+    var usersDatabase = FirebaseDatabase.getInstance().getReference("users")
     private lateinit var mAuth: FirebaseAuth
 
     private var _binding: FragmentLandingPageBinding? = null
@@ -47,7 +45,6 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentLandingPageBinding.bind(view)
-
         networkMonitor = NetworkMonitorUtil(requireActivity())
 
         // call network checker method
@@ -99,6 +96,10 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
         if (currentUser != null) {
             name = currentUser.displayName.toString()
             Constants.name = name
+
+            Log.d("name", "${currentUser.uid}")
+            getUsername(currentUser.uid)
+
             binding.landingSignInTv.visibility = View.INVISIBLE
             binding.landingSignOutTv.visibility = View.VISIBLE
             binding.landingAddMovieImgBtn.visibility = View.VISIBLE
@@ -133,11 +134,37 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
     }
 
     override fun onItemClick(item: Movie, position: Int) {
-        Log.d("CHECKING", "clicked")
-//        val CONSTANT_MOVIES_ID = "MoviesId"
-//        val bundle = bundleOf(CONSTANT_MOVIES_ID to item.id)
+
+        var bundle = bundleOf(
+            "id" to item.id,
+            "title" to item.title,
+            "movieDescription" to item.movieDescription,
+            "releaseDate" to item.releaseDate,
+            "rating" to item.rating,
+            "ticketPrice" to item.ticketPrice,
+            "country" to item.country,
+            "genre" to item.genre,
+            "image" to item.image
+        )
+
+
         Constants.movieId = item.id
-        findNavController().navigate(R.id.movieDetails)
+        findNavController().navigate(R.id.movieDetails, bundle)
+    }
+
+    fun getUsername(key: String) {
+        usersDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+            var name: String = ""
+            override fun onDataChange(snapshot: DataSnapshot) {
+                name = snapshot.child(key).getValue(String::class.java).toString()
+                Log.d("name", "$name")
+                Constants.name = name
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 
     /** LISTEN FOR MOVIES CHANGE */
@@ -157,7 +184,19 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                     val genre = snapshot.child("genre").value.toString()
                     val photo = snapshot.child("image").value.toString()
 
-                    allMovies.add(Movie(id, name, description, releaseDate, rating, ticketPrice, country, genre, photo))
+                    allMovies.add(
+                        Movie(
+                            id,
+                            name,
+                            description,
+                            releaseDate,
+                            rating,
+                            ticketPrice,
+                            country,
+                            genre,
+                            photo
+                        )
+                    )
                 }
 //                Log.d("allMovies", "$allMovies")
                 allMovies.reverse()
@@ -176,18 +215,15 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
         })
     }
 
-
     // check network call
     override fun onResume() {
         super.onResume()
         networkMonitor.register()
     }
 
-
     //
-    private fun checkForNetwork(){
+    private fun checkForNetwork() {
         networkMonitor.result = { isAvailable, type ->
-
             activity?.runOnUiThread {
                 when (isAvailable) {
                     true -> {
@@ -198,7 +234,8 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                             ConnectionType.Cellular -> {
                                 Log.i("NETWORK_MONITOR_STATUS", "Cellular Connection")
                             }
-                            else -> { }
+                            else -> {
+                            }
                         }
                     }
                     false -> {
@@ -208,5 +245,4 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
             }
         }
     }
-
 }
