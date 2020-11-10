@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener
 
 class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClick {
 
+    // network monitor variable
     private lateinit var networkMonitor: NetworkMonitorUtil
 
     //    private val adapter = MovieAdapter(mutableListOf(), this)
@@ -44,8 +45,10 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
 
         _binding = FragmentLandingPageBinding.bind(view)
 
+
         networkMonitor = NetworkMonitorUtil(requireActivity())
 
+        // call network checker method
         checkForNetwork()
         /** REAL TIME UPDATE OF MOVIES */
         moviesListener()
@@ -166,12 +169,14 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
     }
 
 
+    // check network call
     override fun onResume() {
         super.onResume()
         networkMonitor.register()
     }
 
 
+    //
     private fun checkForNetwork(){
         networkMonitor.result = { isAvailable, type ->
 
