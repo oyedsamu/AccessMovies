@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 
 import android.widget.Toast
@@ -20,6 +21,7 @@ import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentLandingPageBinding
 import com.decadevs.accessmovies.utils.ConnectionType
 import com.decadevs.accessmovies.utils.Constants
+import com.decadevs.accessmovies.utils.hideKeyboard
 import com.decadevs.accessmovies.utils.NetworkMonitorUtil
 import com.decadevs.accessmovies.utils.showStatusBar
 import com.google.firebase.auth.FirebaseAuth
@@ -39,22 +41,35 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
 
     private var _binding: FragmentLandingPageBinding? = null
     private val binding get() = _binding!!
+    private lateinit var adapter: MovieAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentLandingPageBinding.bind(view)
 
-
         networkMonitor = NetworkMonitorUtil(requireActivity())
 
         // call network checker method
         checkForNetwork()
-        /** REAL TIME UPDATE OF MOVIES */
-        moviesListener()
 
         /** SHOW STATUS BAR */
         showStatusBar()
+
+        /** REAL TIME UPDATE OF MOVIES */
+        moviesListener()
+
+        /** SEARCH POSTS */
+        binding.landingSearchSv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                adapter.filter.filter(p0)
+                return false
+            }
+        })
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -71,6 +86,10 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
             signOutConfirm(it)
         }
 
+        /** HIDE KEYBOARD */
+        view.setOnClickListener {
+            it.hideKeyboard()
+        }
     }
 
     override fun onStart() {
@@ -124,8 +143,9 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
     /** LISTEN FOR MOVIES CHANGE */
     private fun moviesListener() {
         moviesDatabase.addValueEventListener(object : ValueEventListener {
-            var allMovies = arrayListOf<Movie>()
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val allMovies = arrayListOf<Movie>()
+
                 for (snapshot in dataSnapshot.children) {
                     val id = snapshot.key.toString()
                     val name = snapshot.child("title").value.toString()
@@ -137,25 +157,13 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                     val genre = snapshot.child("genre").value.toString()
                     val photo = snapshot.child("image").value.toString()
 
-                    allMovies.add(
-                        Movie(
-                            id,
-                            name,
-                            description,
-                            releaseDate,
-                            rating,
-                            ticketPrice,
-                            country,
-                            genre,
-                            photo
-                        )
-                    )
+                    allMovies.add(Movie(id, name, description, releaseDate, rating, ticketPrice, country, genre, photo))
                 }
                 Log.d("allMovies", "$allMovies")
                 allMovies.reverse()
                 /** UPDATE MOVIES RECYCLER VIEW */
                 val recyclerView = binding.recyclerView
-                val adapter = MovieAdapter(allMovies.toMutableList(), this@LandingPageFragment)
+                adapter = MovieAdapter(allMovies.toMutableList(), this@LandingPageFragment)
                 recyclerView.adapter = adapter
                 recyclerView.layoutManager = LinearLayoutManager(activity)
             }
