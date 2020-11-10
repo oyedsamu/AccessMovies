@@ -159,7 +159,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
 
                     allMovies.add(Movie(id, name, description, releaseDate, rating, ticketPrice, country, genre, photo))
                 }
-                Log.d("allMovies", "$allMovies")
+//                Log.d("allMovies", "$allMovies")
                 allMovies.reverse()
                 /** UPDATE MOVIES RECYCLER VIEW */
                 val recyclerView = binding.recyclerView

@@ -110,7 +110,7 @@ class MovieDetails : Fragment() {
             // Implement Onclick listener for the button here
             binding.movieCommentSubmitButton.setOnClickListener {
                 val comment = binding.movieCommentEt.text.toString()
-//                addComment(name, comment, movieId)
+                addComment(name, comment, movieId!!)
             }
         } else {
             /** MAKE COMMENT BUTTON TEXT TO LOGIN */
@@ -142,16 +142,14 @@ class MovieDetails : Fragment() {
         /** OBSERVE RESPONSE */
         movieViewModel.newMovieResult?.observe(viewLifecycleOwner, Observer {
             if (it == null) {
-                Snackbar.make(requireView(), "Contact Succssfully added", Snackbar.LENGTH_LONG)
+                Snackbar.make(requireView(), "Comment Successfully added", Snackbar.LENGTH_LONG)
                     .show()
-//                Toast.makeText(this.context, "Comment Successfully added!", Toast.LENGTH_SHORT).show()
             } else {
                 Snackbar.make(
                     requireView(),
                     "Something went wrong. Comment could not be added.",
                     Snackbar.LENGTH_LONG
                 ).show()
-//                Toast.makeText(this.context, "Something went wrong. Comment could not be added.", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -176,7 +174,7 @@ class MovieDetails : Fragment() {
                     val movieId = snapshot.child("movieId").value.toString()
                     allComments.add(Comment("1", movieId, username, comment))
                 }
-                Log.d("allData", "$allComments")
+                Log.d("allComments", "$allComments")
                 val movieComments = arrayListOf<Comment>()
                 /** GET COMMENTS FOR CURRENT MOVIE */
                 for (comment in allComments) {
@@ -206,6 +204,7 @@ class MovieDetails : Fragment() {
             var allMovies = arrayListOf<Movie>()
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
+
                     val title = snapshot.child("title").value.toString()
                     val movieDescription = snapshot.child("movieDescription").value.toString()
                     val releaseDate = snapshot.child("releaseDate").value.toString()
@@ -217,11 +216,12 @@ class MovieDetails : Fragment() {
 
                     allMovies.add(Movie("1", title, movieDescription, releaseDate, rating, ticketPrice, country, genre, image))
                 }
-                Log.d("allMovies", "$allMovies")
+//                Log.d("allMovies", "$allMovies")
                 val movieComments = arrayListOf<Comment>()
                 /** GET DETAILS FOR CURRENT MOVIE */
                 for(movie in allMovies) {
                     if(movie.id == movieId) {
+                        Log.d("movie", movie.toString())
                         setMovieDetails(movie)
                     }
                 }
