@@ -109,4 +109,8 @@ dependencies {
     //kapt
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
 
+
+    //Network call
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+
 }
