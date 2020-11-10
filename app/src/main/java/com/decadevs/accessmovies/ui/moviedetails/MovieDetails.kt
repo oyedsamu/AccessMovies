@@ -46,7 +46,7 @@ class MovieDetails : Fragment() {
     var moviesDatabase = FirebaseDatabase.getInstance().getReference("Movies")
     lateinit var commentRecycler: RecyclerView
     lateinit var mAdapter: CommentRecycler
-    val movieId = arguments?.getString("id")
+    lateinit var movieId: String
 
 
     override fun onCreateView(
@@ -55,6 +55,9 @@ class MovieDetails : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentMoviedetailsBinding.inflate(inflater, container, false)
+        view?.setOnClickListener {
+            it.hideKeyboard()
+        }
         return binding.root
     }
 
@@ -68,6 +71,8 @@ class MovieDetails : Fragment() {
         commentRecycler.layoutManager = LinearLayoutManager(requireContext())
 
         /** GET BUNDLE ARGUMENTS */
+        movieId = arguments?.getString("id").toString()
+
         val title = arguments?.getString("title")
         val movieDescription = arguments?.getString("movieDescription")
         var releaseDate = arguments?.getString("releaseDate")
@@ -199,7 +204,6 @@ class MovieDetails : Fragment() {
                     }
                 }
                 /** UPDATE COMMENTS RECYCLER VIEW */
-                movieComments.reverse()
                 mAdapter = CommentRecycler(movieComments)
                 mAdapter.notifyDataSetChanged()
                 commentRecycler.adapter = mAdapter
