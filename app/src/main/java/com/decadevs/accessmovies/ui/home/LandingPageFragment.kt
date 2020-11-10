@@ -135,7 +135,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                     val ticketPrice = snapshot.child("ticketPrice").value.toString()
                     val country = snapshot.child("country").value.toString()
                     val genre = snapshot.child("genre").value.toString()
-                    val photo = snapshot.child("photo").value.toString()
+                    val photo = snapshot.child("image").value.toString()
 
                     allMovies.add(
                         Movie(
