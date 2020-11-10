@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,10 +24,10 @@ import com.decadevs.accessmovies.data.Movie
 import com.decadevs.accessmovies.databinding.FragmentAddMovieBinding
 import com.decadevs.accessmovies.utils.showStatusBar
 import com.decadevs.accessmovies.validation.Validation
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.decadevs.accessmovies.viewmodel.MovieViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.util.*
 
 
@@ -183,33 +182,29 @@ class AddMovieFragment : Fragment() {
                         .show()
                 }
                 else -> {
-                    checkRunTimePermission()
-//                    uploadImage(imageUri)
+                    val movieGenres =
+                        if (result.isNotEmpty()) result.substring(0, result.length - 1) else result
+                    val movieTitle = editTextTitle.text.toString()
+                    val movieReleaseDate = editTextReleaseDate.text.toString()
+                    val movieTicket = editTextTicket.text.toString()
+                    val movieDescription = editTextDescription.text.toString()
+
+                    val movie = Movie(
+                        "1",
+                        movieTitle,
+                        movieDescription,
+                        movieReleaseDate,
+                        movieRating,
+                        movieTicket,
+                        movieCountry,
+                        movieGenres,
+                        movieImageUrl
+                    )
+                    /** ADD MOVIE TO DATABASE */
+                    addMovie(movie)
+                    findNavController().navigate(R.id.landingPage)
                 }
             }
-
-            val movieGenres =
-                if (result.isNotEmpty()) result.substring(0, result.length - 1) else result
-            val movieTitle = editTextTitle.text.toString()
-            val movieReleaseDate = editTextReleaseDate.text.toString()
-            val movieTicket = editTextTicket.text.toString()
-            val movieDescription = editTextDescription.text.toString()
-
-            val movie = Movie(
-                "1",
-                movieTitle,
-                movieDescription,
-                movieReleaseDate,
-                movieRating,
-                movieTicket,
-                movieCountry,
-                movieGenres,
-                movieImageUrl
-            )
-
-            /** ADD MOVIE TO DATABASE */
-            addMovie(movie)
-            findNavController().popBackStack()
         }
         /** Show the date button on click of date button **/
         editTextReleaseDate.setOnClickListener {

@@ -2,6 +2,7 @@ package com.decadevs.accessmovies.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -22,7 +23,7 @@ class MovieAdapter(val movies: MutableList<Movie>, var listener: OnItemClick) :
             this.movie = movie
             binding.apply {
                 Glide.with(itemView)
-                    .load(R.drawable.sixunderground)
+                    .load(movie.image)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_error)

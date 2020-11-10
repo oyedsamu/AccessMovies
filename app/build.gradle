@@ -88,7 +88,7 @@ dependencies {
     //Firebase-UI Library
     implementation 'com.firebaseui:firebase-ui-database:4.3.1'
 
-    //Android Paging Libray
+    //Android Paging Library
     implementation "android.arch.paging:runtime:1.0.1"
 
     //Firebase Pagination Library
