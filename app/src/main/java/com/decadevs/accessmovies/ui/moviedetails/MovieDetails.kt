@@ -95,20 +95,6 @@ class MovieDetails : Fragment() {
             .error(R.drawable.sixunderground)
             .into(binding.movieImg)
 
-
-        /** Set the Color of the bar to be inferred from the main image */
-        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.sixunderground)
-
-        Palette.from(bitmap).generate(Palette.PaletteAsyncListener() {
-            if (it != null) {
-                binding.fragmentMovieDetailsCollapsingToolBar.setContentScrimColor(
-                    it.getMutedColor(
-                        R.attr.colorPrimary
-                    )
-                )
-            }
-        })
-
         mAuth = FirebaseAuth.getInstance()
         val toolbar: Toolbar = binding.toolbar
 
