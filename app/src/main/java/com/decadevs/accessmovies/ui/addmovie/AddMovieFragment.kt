@@ -33,7 +33,7 @@ import java.util.*
 
 class AddMovieFragment : Fragment() {
     /**
-     * All needed
+     * All needed variables
      */
     private var _binding: FragmentAddMovieBinding? = null
     private val binding get() = _binding!!
@@ -319,23 +319,6 @@ class AddMovieFragment : Fragment() {
             myImage.setImageURI(imageUri)
         }
     }
-
-
-    /** handle result of picked image */
-//    private fun uploadImage(imageUri: Uri) {
-//        var progress = ProgressDialog(context)
-//        progress.setTitle("Uploading your movie details...")
-//        progress.show()
-//        val imageRef = mStorageRef.child("imageFolder/${imageUri.lastPathSegment}")
-//        val uploadTask = imageRef.putFile(imageUri)
-//        uploadTask.addOnSuccessListener {
-//            progress.dismiss()
-//            Toast.makeText(this.context, "Uploaded", Toast.LENGTH_LONG).show()
-//            imageRef.downloadUrl.addOnSuccessListener {
-//                movieImageUrl = it.toString()
-//            }
-//        }
-//    }
 
     private fun addMovie(movie: Movie) {
         /** ADD NEW MOVIE TO DATABASE */

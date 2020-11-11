@@ -8,10 +8,29 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+
     <!-- PROJECT COLORS -->
     <color name="orange">#E79035</color>
     <color name="pink">#CC5068</color>
     <color name="blue">#091C4C</color>
+    <color name="deep_orange">#F57C00</color>
+    <color name="lighter_orange">#FFE0B2</color>
+    <color name="orange_g">#FF9800</color>
+    <color name="blacker">#212121</color>
+    <color name="accent">#536DFE</color>
+    <color name="bright_grey">#757575</color>
+    <color name="brighter_grey">#BDBDBD</color>
+
+
+    <color name="primaryColor">#e79035</color>
+    <color name="primaryLightColor">#ffc164</color>
+    <color name="primaryDarkColor">#b06200</color>
+    <color name="secondaryColor">#234099</color>
+    <color name="secondaryLightColor">#5c6acb</color>
+    <color name="secondaryDarkColor">#001b6a</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#ffffff</color>
+
 
     <!-- ONBOARDING -->
     <color name="onboarding2_yellow">#B49A3F</color>

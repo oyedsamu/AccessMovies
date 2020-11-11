@@ -54,9 +54,6 @@ class MovieDetails : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentMoviedetailsBinding.inflate(inflater, container, false)
-        view?.setOnClickListener {
-            it.hideKeyboard()
-        }
         return binding.root
     }
 
@@ -64,6 +61,10 @@ class MovieDetails : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         /** INITIALISE VIEWMODEL */
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
+
+        view.setOnClickListener {
+            it.hideKeyboard()
+        }
 
         commentRecycler = binding.movieDetailsCommentRecyclerList
         commentRecycler.setHasFixedSize(true)

@@ -28,7 +28,6 @@ class NetworkMonitorUtil(context: Context) {
             val connectivityManager = mContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
             if (connectivityManager.activeNetwork == null) {
-
                 // UNAVAILABLE
                 result(false,null)
             }
@@ -37,7 +36,6 @@ class NetworkMonitorUtil(context: Context) {
             networkCallback = object : ConnectivityManager.NetworkCallback() {
                 override fun onLost(network: Network) {
                     super.onLost(network)
-
                     // UNAVAILABLE
                     result(false, null)
                 }
@@ -87,7 +85,6 @@ class NetworkMonitorUtil(context: Context) {
                 // Get Type of Connection
                 when (activeNetworkInfo.type) {
                     ConnectivityManager.TYPE_WIFI -> {
-
                         // WIFI
                         result(true, ConnectionType.Wifi)
                     }
