@@ -9,10 +9,11 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.moviedetails.MovieDetails">
 
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="540dp"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
 
@@ -21,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/design_default_color_primary"
+            app:contentScrim="@color/orange"
             app:expandedTitleMarginEnd="20dp"
             app:expandedTitleMarginStart="15dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
@@ -38,7 +39,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="75dp"
                 android:layout_gravity="bottom"
                 android:background="@drawable/title_background"
                 android:foregroundGravity="right" />
@@ -58,7 +59,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
+        android:overScrollMode="ifContentScrolls"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
 
@@ -70,7 +71,7 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:background="@drawable/movie_item_background"
+                android:background="@drawable/moviedetails_background"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingStart="10dp"
@@ -106,7 +107,7 @@
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
                         android:text="@string/ratings"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -138,7 +139,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="@string/release_date"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -170,7 +171,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="@string/ticket_price_title"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -190,7 +191,7 @@
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:text="@string/country"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -219,7 +220,7 @@
                     android:layout_marginTop="10dp"
                     android:paddingStart="10dp"
                     android:text="@string/genres"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -269,7 +270,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:paddingStart="10dp"
+                android:paddingHorizontal="10dp"
                 tools:listitem="@layout/comment_item"
                 />
 
@@ -277,7 +278,10 @@
                 android:id="@+id/movie_comment_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="50dp"
+                android:minHeight="100dp"
+                android:background="@drawable/comment_background"
+                android:padding="5dp"
+                android:gravity="top|left"
                 android:layout_marginHorizontal="10dp"
                 android:autofillHints="Enter Comment"
                 android:inputType="textMultiLine" />
@@ -286,10 +290,11 @@
                 android:id="@+id/movie_comment_submit_button"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="10dp"
                 android:paddingHorizontal="5dp"
                 android:backgroundTint="@color/blue"
                 app:cornerRadius="20dp"
+                android:lines="5"
                 android:text="@string/comment"
                 android:textSize="20sp"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
