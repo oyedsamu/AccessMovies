@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.decadevs.accessmovies.R
 import com.decadevs.accessmovies.adapters.MovieAdapter
 import com.decadevs.accessmovies.adapters.OnItemClick
@@ -152,10 +156,23 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                 name = snapshot.child(key).getValue(String::class.java).toString()
                 Constants.name = name
             }
+
             override fun onCancelled(error: DatabaseError) {
 
             }
         })
+    }
+
+    /** RECYCLERVIEW ANIMATION */
+
+    fun layoutAnimation(recyclerview: RecyclerView) {
+        val context = recyclerview.context
+        val layoutAnimationController =
+            AnimationUtils.loadLayoutAnimation(context, R.anim.layout_falldown)
+
+        recyclerview.layoutAnimation = layoutAnimationController
+        recyclerview.adapter?.notifyDataSetChanged()
+        recyclerview.scheduleLayoutAnimation()
     }
 
     /** LISTEN FOR MOVIES CHANGE */
@@ -195,6 +212,8 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                 adapter = MovieAdapter(allMovies.toMutableList(), this@LandingPageFragment)
                 recyclerView.adapter = adapter
                 recyclerView.layoutManager = LinearLayoutManager(activity)
+
+                layoutAnimation(recyclerView)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -227,7 +246,7 @@ class LandingPageFragment : Fragment(R.layout.fragment_landing_page), OnItemClic
                         }
                     }
                     false -> {
-                        Log.i("NETWORK_MONITOR_STATUS", "No Connection")
+
                     }
                 }
             }

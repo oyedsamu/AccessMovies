@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
